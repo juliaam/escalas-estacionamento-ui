@@ -1,5 +1,14 @@
 import { ReactElement } from "react";
+import { Outlet } from "react-router-dom";
+import { Header } from "../components/Header/Header";
 
-export function MainLayout({ children }): ReactElement {
-  <div className="min-h-screen">{children}</div>;
+export function MainLayoutWrapper(): ReactElement {
+  return (
+    <div className="w-screen h-dvh">
+      <div className="h-full">
+        <Header />
+        <Outlet />
+      </div>
+    </div>
+  );
 }

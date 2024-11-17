@@ -1,14 +1,8 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Home } from "../Home";
 import { Config } from "../Config";
-
-const MainLayoutWrapper = () => (
-  <div>
-    header
-    <Outlet />
-  </div>
-);
+import { MainLayoutWrapper } from "../../layouts/MainLayout";
 
 const router = createBrowserRouter([
   {

@@ -1,3 +1,9 @@
+import { Scale } from "../components/Scale/Scale";
+
 export function Home() {
-  return <>home</>;
+  return (
+    <div className="w-full flex">
+      <Scale />
+    </div>
+  );
 }

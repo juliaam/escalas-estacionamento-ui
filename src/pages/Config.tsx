@@ -1,3 +1,3 @@
 export function Config() {
-  return <>asdiusaio</>;
+  return <>pag de config</>;
 }

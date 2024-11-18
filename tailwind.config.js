@@ -15,7 +15,7 @@ module.exports = {
           "Segoe UI Symbol",
           "Noto Color Emoji",
         ],
-        "open-sans": ['Open Sans"', "serif"],
+        "open-sans": ['"Open Sans"', "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

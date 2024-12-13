@@ -1,8 +1,8 @@
-import { Card } from "@/components/Card/Card";
-import { ListCooperators } from "./components/ListCooperators";
+import { ListCooperators } from "../ListCooperators";
 import { cooperadores } from "@/mocks/constrainsts";
-import { Plus, X } from "lucide-react";
+import { Minus, Plus, UserRoundCheck, UserX } from "lucide-react";
 import { useState } from "react";
+import { Card, CardTitle } from "@/components/Card";
 
 export function CooperatorsSelect() {
   const [expectionCooperators, setExpectionCooperators] = useState<string[]>(
@@ -24,19 +24,21 @@ export function CooperatorsSelect() {
 
   return (
     <Card>
-      <div className="grid grid-flow-col">
+      <div className="grid grid-flow-col gap-x-3">
         <ListCooperators
           onClickButton={addCooperatorException}
-          title="Pessoas escaladas"
+          title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
           cooperators={selectedCooperators}
-          actionIcon={<X size={18} color="white" />}
+          actionIcon={<Minus color="white" />}
+          classNameButton="bg-red-500 hover:bg-red-700"
         />
-        <span className="w-[1px] h-full bg-black"></span>
+        <span className="h-full w-[1px] bg-black"></span>
         <ListCooperators
           onClickButton={removeCooperatorsException}
-          title="Pessoas não escaladas"
+          title={<CardTitle text="Não escalados" icon={<UserX />} />}
           cooperators={expectionCooperators}
-          actionIcon={<Plus size={18} color="white" />}
+          actionIcon={<Plus color="white" />}
+          classNameButton="bg-green-400 hover:bg-green-600"
         />
       </div>
     </Card>

@@ -4,11 +4,9 @@ import { Header } from "../components/Header/Header";
 
 export function MainLayoutWrapper(): ReactElement {
   return (
-    <div className="w-screen h-dvh">
-      <div className="h-full">
-        <Header />
-        <Outlet />
-      </div>
+    <div className="h-screen w-screen overflow-x-hidden">
+      <Header />
+      <Outlet />
     </div>
   );
 }

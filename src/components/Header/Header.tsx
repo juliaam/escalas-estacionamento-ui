@@ -1,5 +1,5 @@
 export function Header() {
   return (
-    <div className="w-full font-open-sans justify-center min-h-16  flex items-center text-zinc-800 bg-orange-300"></div>
+    <div className="flex h-16 w-full items-center justify-center bg-main-green font-open-sans text-zinc-800"></div>
   );
 }

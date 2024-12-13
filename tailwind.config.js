@@ -16,6 +16,7 @@ module.exports = {
           "Noto Color Emoji",
         ],
         "open-sans": ['"Open Sans"', "serif"],
+        montserrat: ['"Montserrat"', "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -63,6 +64,10 @@ module.exports = {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+      },
+      backgroundColor: {
+        "main-green": "#095E52",
+        "main-white": "#FAFAFA",
       },
     },
   },

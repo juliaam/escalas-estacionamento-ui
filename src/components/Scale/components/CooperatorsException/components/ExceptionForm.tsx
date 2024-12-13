@@ -1,5 +1,4 @@
-import { DatePicker } from "@/components/ui/application/DatePicker";
-import { Button, Label, Select, Textarea } from "@/components/ui";
+import { DatePicker, Button, Label, Select, Textarea } from "@/components";
 import { Controller, useForm } from "react-hook-form";
 
 const options = [{ label: "Claúdio", value: "claudioValue" }];

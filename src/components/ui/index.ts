@@ -7,8 +7,19 @@ export * from "./dialog";
 export * from "./input";
 export * from "./label";
 export * from "./popover";
-export * as SelectShadCN from "./select";
 export * from "./textarea";
+export {
+  Select as SelectShadCN,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 
 // application components
 

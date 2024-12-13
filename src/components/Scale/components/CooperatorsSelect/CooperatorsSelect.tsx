@@ -2,7 +2,7 @@ import { ListCooperators } from "../ListCooperators";
 import { cooperadores } from "@/mocks/constrainsts";
 import { Minus, Plus, UserRoundCheck, UserX } from "lucide-react";
 import { useState } from "react";
-import { Card, CardTitle } from "@/components/Card";
+import { Button, Card, CardTitle } from "@/components";
 
 export function CooperatorsSelect() {
   const [expectionCooperators, setExpectionCooperators] = useState<string[]>(
@@ -29,8 +29,17 @@ export function CooperatorsSelect() {
           onClickButton={addCooperatorException}
           title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
           cooperators={selectedCooperators}
-          actionIcon={<Minus color="white" />}
-          classNameButton="bg-red-500 hover:bg-red-700"
+          content={
+            <Button
+              size="icon"
+              className="bg-red-500 hover:bg-red-700"
+              onClick={() => {
+                onClickButton?.(cooperator);
+              }}
+            >
+              <Minus color="white" />
+            </Button>
+          }
         />
         <span className="h-full w-[1px] bg-black"></span>
         <ListCooperators

@@ -1,10 +1,10 @@
 import {
-  Select as SelectShadCN,
+  SelectShadCN,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components";
 import { Option } from "@/shared/types/option";
 
 type SelectProps = {

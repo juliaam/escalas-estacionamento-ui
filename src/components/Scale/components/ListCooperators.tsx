@@ -1,4 +1,4 @@
-import { Button, InputSearch } from "@/components/ui";
+import { Button, InputSearch } from "@/components";
 import { ReactNode, useMemo, useState } from "react";
 
 interface ListCooperatorsProps {
@@ -7,16 +7,15 @@ interface ListCooperatorsProps {
   actionIcon?: ReactNode;
   onClickButton?: any;
   classNameButton?: string;
+  content?: ReactNode;
 }
 
 const formatString = (string: string) => string.trim().toLowerCase();
 
 export function ListCooperators({
   cooperators,
-  actionIcon,
   title,
-  onClickButton,
-  classNameButton,
+  content,
 }: ListCooperatorsProps) {
   const [inputValue, setInputValue] = useState("");
 
@@ -40,17 +39,7 @@ export function ListCooperators({
               key={cooperator}
             >
               <span>{cooperator}</span>
-              {actionIcon && (
-                <Button
-                  size="icon"
-                  className={`${classNameButton}`}
-                  onClick={() => {
-                    onClickButton?.(cooperator);
-                  }}
-                >
-                  {actionIcon}
-                </Button>
-              )}
+              {content}
             </div>
           );
         })}

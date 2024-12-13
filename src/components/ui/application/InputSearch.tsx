@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useMemo } from "react";
-import { Input } from "@/components/ui";
+import { Input } from "@/components";
 import debounce from "lodash.debounce";
 
 export interface InputSearchProps {

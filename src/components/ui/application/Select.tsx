@@ -4,26 +4,29 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Label,
 } from "@/components";
 import { Option } from "@/shared/types/option";
 
-type SelectProps = {
+type SelectBaseProps = {
   name: string;
   value: string;
-  options: Option[];
   placeholder?: string;
+  options: Option[];
   onValueChange?: (value: string) => void;
 };
 
-export function Select({
-  name = "",
-  value = "",
-  options = [],
-  placeholder = "",
-  onValueChange,
-}: SelectProps) {
+type SelectProps = SelectBaseProps & {
+  label?: string;
+};
+
+export function SelectBase({
+  options,
+  placeholder,
+  ...props
+}: SelectBaseProps) {
   return (
-    <SelectShadCN name={name} value={value} onValueChange={onValueChange}>
+    <SelectShadCN {...props}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -35,5 +38,18 @@ export function Select({
         ))}
       </SelectContent>
     </SelectShadCN>
+  );
+}
+
+export function Select({ name = "select", label = "", ...props }: SelectProps) {
+  if (!label) return <SelectBase name={name} {...props} />;
+
+  return (
+    <div className="flex flex-col gap-y-1">
+      <Label htmlFor={name} className="text-md text-base">
+        {label}
+      </Label>
+      <SelectBase name={name} {...props} />
+    </div>
   );
 }

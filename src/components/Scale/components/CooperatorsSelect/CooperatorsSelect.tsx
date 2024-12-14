@@ -26,28 +26,35 @@ export function CooperatorsSelect() {
     <Card>
       <div className="grid grid-flow-col gap-x-3">
         <ListCooperators
-          onClickButton={addCooperatorException}
           title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
           cooperators={selectedCooperators}
-          content={
+          cooperatorContent={(cooperator) => (
             <Button
               size="icon"
               className="bg-red-500 hover:bg-red-700"
               onClick={() => {
-                onClickButton?.(cooperator);
+                addCooperatorException(cooperator);
               }}
             >
               <Minus color="white" />
             </Button>
-          }
+          )}
         />
         <span className="h-full w-[1px] bg-black"></span>
         <ListCooperators
-          onClickButton={removeCooperatorsException}
           title={<CardTitle text="Não escalados" icon={<UserX />} />}
           cooperators={expectionCooperators}
-          actionIcon={<Plus color="white" />}
-          classNameButton="bg-green-400 hover:bg-green-600"
+          cooperatorContent={(cooperator) => (
+            <Button
+              className="bg-green-400 hover:bg-green-600"
+              size="icon"
+              onClick={() => {
+                removeCooperatorsException(cooperator);
+              }}
+            >
+              <Plus color="white" />
+            </Button>
+          )}
         />
       </div>
     </Card>

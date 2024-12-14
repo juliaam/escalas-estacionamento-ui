@@ -20,12 +20,13 @@ export function ExceptionForm({}) {
 
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 gap-x-2">
         <Controller
           name="cooperator"
           control={control}
           render={({ field }) => (
             <Select
+              label="Cooperador:"
               name="cooperator"
               placeholder="Selecione o cooperador"
               value={field.value}
@@ -39,8 +40,9 @@ export function ExceptionForm({}) {
           control={control}
           render={({ field }) => (
             <DatePicker
-              placeholder="Selecione a data"
               value={field.value}
+              label="Data:"
+              placeholder="Selecione a data"
               onValueChange={field.onChange}
             />
           )}

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   Button,
   Calendar,
+  Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -13,17 +14,22 @@ import { useEffect, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { SelectSingleEventHandler } from "react-day-picker";
 
-type DatePickerProps = {
+type DatePickerBaseProps = {
+  name?: string;
   value: Date | undefined;
   placeholder?: string;
   onValueChange?: SelectSingleEventHandler;
 };
 
-export function DatePicker({
+export type DatePickerProps = DatePickerBaseProps & {
+  label?: string;
+};
+
+export function DatePickerBase({
   placeholder = "",
   value,
   onValueChange,
-}: DatePickerProps) {
+}: DatePickerBaseProps) {
   const [openPopover, setOpenPopover] = useState(false);
 
   useEffect(() => {
@@ -60,5 +66,17 @@ export function DatePicker({
         />
       </PopoverContent>
     </Popover>
+  );
+}
+
+export function DatePicker({ name, label, ...props }: DatePickerProps) {
+  if (!label) return <DatePickerBase {...props} />;
+  return (
+    <div className="flex flex-col gap-y-1">
+      <Label htmlFor={name} className="text-md text-base">
+        {label}
+      </Label>
+      <DatePickerBase name={name} {...props} />
+    </div>
   );
 }

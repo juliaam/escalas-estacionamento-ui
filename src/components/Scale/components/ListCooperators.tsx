@@ -27,8 +27,7 @@ export function ListCooperators({
     <div className="flex flex-col gap-y-4">
       {title && <span className="text-xl">{title}</span>}
       <InputSearch setInputValue={setInputValue} />
-      <div className="flex h-[30rem] flex-col overflow-auto scroll-smooth px-2">
-        {/* ajustar max-width */}
+      <div className="flex h-full flex-col scroll-smooth pr-6">
         {filteredResults?.map((cooperator) => {
           return (
             <div

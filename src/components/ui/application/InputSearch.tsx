@@ -19,5 +19,11 @@ export function InputSearch({ setInputValue }: InputSearchProps) {
     []
   );
 
-  return <Input placeholder="Pesquise..." onChange={handleSearch} />;
+  return (
+    <Input
+      placeholder="Pesquise..."
+      className="bg-white"
+      onChange={handleSearch}
+    />
+  );
 }

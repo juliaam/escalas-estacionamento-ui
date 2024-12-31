@@ -39,9 +39,7 @@ export function ListCooperators({
             </div>
           );
         })}
-        {!filteredResults?.length &&
-          !!cooperators?.length &&
-          "Não há resultados para essa busca"}
+        {!filteredResults?.length && "Não há resultados para essa busca"}
       </div>
     </>
   );

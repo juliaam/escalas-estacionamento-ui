@@ -6,7 +6,7 @@ import { cooperadores } from "@/mocks/constrainsts";
 
 export function CooperatorUnselect() {
   return (
-    <Card>
+    <Card className="grid gap-y-4">
       <ListCooperators
         title={<CardTitle text="Não escalados" icon={<UserX />} />}
         cooperators={cooperadores}

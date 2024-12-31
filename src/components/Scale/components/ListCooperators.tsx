@@ -24,10 +24,10 @@ export function ListCooperators({
   }, [inputValue, cooperators]);
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <>
       {title && <span className="text-xl">{title}</span>}
       <InputSearch setInputValue={setInputValue} />
-      <div className="flex h-full flex-col scroll-smooth pr-6">
+      <div className="flex h-full flex-col overflow-auto scroll-smooth pr-6">
         {filteredResults?.map((cooperator) => {
           return (
             <div
@@ -43,6 +43,6 @@ export function ListCooperators({
           !!cooperators?.length &&
           "Não há resultados para essa busca"}
       </div>
-    </div>
+    </>
   );
 }

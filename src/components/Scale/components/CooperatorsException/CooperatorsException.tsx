@@ -19,7 +19,7 @@ export interface CooperatorsExceptionProps {}
 export function CooperatorsException({}: CooperatorsExceptionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
-    <Card className="grid gap-y-2">
+    <Card className="grid gap-y-4">
       <CardTitle text="Lista de excessões" icon={<MessageSquareWarning />} />
       <Button
         onClick={() => {

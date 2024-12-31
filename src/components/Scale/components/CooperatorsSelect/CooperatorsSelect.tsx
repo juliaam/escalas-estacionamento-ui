@@ -18,24 +18,22 @@ export function CooperatorsSelect() {
   };
 
   return (
-    <Card>
-      <div className="grid grid-flow-col gap-x-3">
-        <ListCooperators
-          title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
-          cooperators={selectedCooperators}
-          cooperatorContent={(cooperator) => (
-            <Button
-              size="icon"
-              className="bg-red-500 hover:bg-red-700"
-              onClick={() => {
-                addCooperatorException(cooperator);
-              }}
-            >
-              <Minus color="white" />
-            </Button>
-          )}
-        />
-      </div>
+    <Card className="grid gap-y-4">
+      <ListCooperators
+        title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
+        cooperators={selectedCooperators}
+        cooperatorContent={(cooperator) => (
+          <Button
+            size="icon"
+            className="bg-red-500 hover:bg-red-700"
+            onClick={() => {
+              addCooperatorException(cooperator);
+            }}
+          >
+            <Minus color="white" />
+          </Button>
+        )}
+      />
     </Card>
   );
 }

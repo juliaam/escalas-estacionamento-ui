@@ -1,4 +1,4 @@
-import { InputSearch } from "@/components";
+import { AppInputSearch } from "@/components/ui";
 import { ReactNode, useMemo, useState } from "react";
 
 interface ListCooperatorsProps {
@@ -26,7 +26,7 @@ export function ListCooperators({
   return (
     <>
       {title && <span className="text-xl">{title}</span>}
-      <InputSearch setInputValue={setInputValue} />
+      <AppInputSearch setInputValue={setInputValue} />
       <div className="flex h-full flex-col overflow-auto scroll-smooth pr-6">
         {filteredResults?.map((cooperator) => {
           return (

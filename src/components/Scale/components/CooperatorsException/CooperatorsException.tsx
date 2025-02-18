@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { MessageSquareWarning, Plus } from "lucide-react";
 import { ListCooperators } from "../ListCooperators";
-import { ExceptionForm } from "./components/ExceptionForm";
+import { ExceptionForm } from "@/components/Scale/components/CooperatorsException/components/ExceptionForm";
+import { Card, CardTitle } from "@/components";
 import {
-  Card,
-  CardTitle,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   Button,
-} from "@/components";
+} from "@/components/ui";
 import { cooperadores } from "@/mocks/constrainsts";
 
 export interface CooperatorsExceptionProps {}
@@ -19,7 +18,7 @@ export interface CooperatorsExceptionProps {}
 export function CooperatorsException({}: CooperatorsExceptionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
-    <Card className="grid gap-y-4">
+    <Card>
       <CardTitle text="Lista de excessões" icon={<MessageSquareWarning />} />
       <Button
         onClick={() => {

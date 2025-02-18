@@ -1,4 +1,5 @@
-import { Button, Card, CardTitle } from "@/components";
+import { Card, CardTitle } from "@/components";
+import { Button } from "@/components/ui";
 import { ListCooperators } from "../ListCooperators";
 import { Plus, UserX } from "lucide-react";
 
@@ -6,7 +7,7 @@ import { cooperadores } from "@/mocks/constrainsts";
 
 export function CooperatorUnselect() {
   return (
-    <Card className="grid gap-y-4">
+    <Card>
       <ListCooperators
         title={<CardTitle text="Não escalados" icon={<UserX />} />}
         cooperators={cooperadores}

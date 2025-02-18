@@ -11,7 +11,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components";
+} from "@/components/ui";
 
 import { ChevronsUpDown, Check } from "lucide-react";
 import { useState } from "react";
@@ -21,11 +21,12 @@ export interface MultiSelectProps {
   placeholder: string;
 }
 
-export function MultiSelect({ options = [], placeholder }: MultiSelectProps) {
+export function AppMultiSelect({
+  options = [],
+  placeholder,
+}: MultiSelectProps) {
   const [open, setOpen] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([]);
-
-  console.log(options);
+  const [selectedValues] = useState([]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

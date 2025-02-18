@@ -1,4 +1,10 @@
-import { DatePicker, Button, Label, Select, Textarea } from "@/components";
+import {
+  Button,
+  Label,
+  Textarea,
+  AppDatePicker,
+  AppSelect,
+} from "@/components/ui";
 import { Controller, useForm } from "react-hook-form";
 
 const options = [{ label: "Claúdio", value: "claudioValue" }];
@@ -25,7 +31,7 @@ export function ExceptionForm({}) {
           name="cooperator"
           control={control}
           render={({ field }) => (
-            <Select
+            <AppSelect
               label="Cooperador:"
               name="cooperator"
               placeholder="Selecione o cooperador"
@@ -39,7 +45,7 @@ export function ExceptionForm({}) {
           name="date"
           control={control}
           render={({ field }) => (
-            <DatePicker
+            <AppDatePicker
               value={field.value}
               label="Data:"
               placeholder="Selecione a data"

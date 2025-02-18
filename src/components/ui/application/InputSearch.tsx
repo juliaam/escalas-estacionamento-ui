@@ -1,12 +1,12 @@
 import { ChangeEvent, Dispatch, SetStateAction, useMemo } from "react";
-import { Input } from "@/components";
+import { Input } from "@/components/ui";
 import debounce from "lodash.debounce";
 
 export interface InputSearchProps {
   setInputValue: Dispatch<SetStateAction<string>>;
 }
 
-export function InputSearch({ setInputValue }: InputSearchProps) {
+export function AppInputSearch({ setInputValue }: InputSearchProps) {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     debouncedSearch(e.target.value);
   };

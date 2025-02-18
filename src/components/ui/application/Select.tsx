@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
   Label,
-} from "@/components";
+} from "@/components/ui";
 import { Option } from "@/shared/types/option";
 
 type SelectBaseProps = {
@@ -41,7 +41,11 @@ export function SelectBase({
   );
 }
 
-export function Select({ name = "select", label = "", ...props }: SelectProps) {
+export function AppSelect({
+  name = "select",
+  label = "",
+  ...props
+}: SelectProps) {
   if (!label) return <SelectBase name={name} {...props} />;
 
   return (

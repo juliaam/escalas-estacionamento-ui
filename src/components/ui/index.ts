@@ -8,6 +8,8 @@ export * from "./input";
 export * from "./label";
 export * from "./popover";
 export * from "./textarea";
+export * from "./dropdown-menu";
+export * from "./sidebar";
 export {
   Select as SelectShadCN,
   SelectContent,

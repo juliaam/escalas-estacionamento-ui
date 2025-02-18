@@ -9,7 +9,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components";
+} from "@/components/ui";
 import { useEffect, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { SelectSingleEventHandler } from "react-day-picker";
@@ -69,7 +69,7 @@ export function DatePickerBase({
   );
 }
 
-export function DatePicker({ name, label, ...props }: DatePickerProps) {
+export function AppDatePicker({ name, label, ...props }: DatePickerProps) {
   if (!label) return <DatePickerBase {...props} />;
   return (
     <div className="flex flex-col gap-y-1">

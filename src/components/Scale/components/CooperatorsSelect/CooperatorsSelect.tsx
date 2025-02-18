@@ -2,7 +2,8 @@ import { ListCooperators } from "../ListCooperators";
 import { cooperadores } from "@/mocks/constrainsts";
 import { Minus, UserRoundCheck } from "lucide-react";
 import { useState } from "react";
-import { Button, Card, CardTitle } from "@/components";
+import { Card, CardTitle } from "@/components";
+import { Button } from "@/components/ui";
 
 export function CooperatorsSelect() {
   const [expectionCooperators, setExpectionCooperators] = useState<string[]>(
@@ -18,7 +19,7 @@ export function CooperatorsSelect() {
   };
 
   return (
-    <Card className="grid gap-y-4">
+    <Card>
       <ListCooperators
         title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
         cooperators={selectedCooperators}

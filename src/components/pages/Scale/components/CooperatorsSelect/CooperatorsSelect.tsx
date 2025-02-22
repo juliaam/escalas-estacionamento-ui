@@ -1,5 +1,5 @@
 import { ListCooperators } from "../ListCooperators";
-import { cooperadores } from "@/mocks/constrainsts";
+import { cooperadores } from "@/shared/mocks/constrainsts";
 import { Minus, UserRoundCheck } from "lucide-react";
 import { useState } from "react";
 import { Card, CardTitle } from "@/components";

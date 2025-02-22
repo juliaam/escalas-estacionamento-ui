@@ -111,3 +111,20 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+/* default styles */
+
+@layer base {
+  * {
+    @apply font-montserrat text-base font-normal;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

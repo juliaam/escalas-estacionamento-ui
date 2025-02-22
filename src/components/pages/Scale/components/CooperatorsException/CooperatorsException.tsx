@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MessageSquareWarning, Plus } from "lucide-react";
 import { ListCooperators } from "../ListCooperators";
-import { ExceptionForm } from "@/components/Scale/components/CooperatorsException/components/ExceptionForm";
+import { ExceptionForm } from "@/components/pages/Scale/components/CooperatorsException/components";
 import { Card, CardTitle } from "@/components";
 import {
   Dialog,
@@ -11,7 +11,7 @@ import {
   DialogTitle,
   Button,
 } from "@/components/ui";
-import { cooperadores } from "@/mocks/constrainsts";
+import { cooperadores } from "@/shared/mocks/constrainsts";
 
 export interface CooperatorsExceptionProps {}
 

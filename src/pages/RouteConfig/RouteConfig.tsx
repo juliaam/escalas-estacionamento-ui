@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { Config, Home } from "@/pages";
+import { Home } from "@/pages";
 import { MainLayoutWrapper } from "@/layouts/MainLayout";
+import { ManageCooperators } from "@/components/pages/Config/Config";
 
 const router = createBrowserRouter([
   {
@@ -13,8 +14,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "config",
-        element: <Config />,
+        path: "/gerenciador-cooperadores",
+        element: <ManageCooperators />,
       },
     ],
   },

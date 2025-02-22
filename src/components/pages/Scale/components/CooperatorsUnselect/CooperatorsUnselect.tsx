@@ -3,7 +3,7 @@ import { Button } from "@/components/ui";
 import { ListCooperators } from "../ListCooperators";
 import { Plus, UserX } from "lucide-react";
 
-import { cooperadores } from "@/mocks/constrainsts";
+import { cooperadores } from "@/shared/mocks/constrainsts";
 
 export function CooperatorUnselect() {
   return (

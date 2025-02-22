@@ -5,10 +5,12 @@ import { Outlet } from "react-router-dom";
 
 export function MainLayoutWrapper(): ReactElement {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className="h-screen w-screen overflow-x-hidden">
         <Header />
-        <Outlet />
+        <main className="px-20">
+          <Outlet />
+        </main>
       </div>
       <AppSidebar />
     </SidebarProvider>

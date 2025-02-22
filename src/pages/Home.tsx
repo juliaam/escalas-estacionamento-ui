@@ -1,4 +1,4 @@
-import { Scale } from "../components/Scale/Scale";
+import { Scale } from "@/components/pages";
 
 export function Home() {
   return (

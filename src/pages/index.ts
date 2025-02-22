@@ -1,2 +1,2 @@
-export * from "./Config";
+export * from "./ManageCooperators";
 export * from "./Home";

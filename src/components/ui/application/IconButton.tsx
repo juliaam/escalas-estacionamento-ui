@@ -1,5 +1,5 @@
-import { Button, ButtonProps } from "@/components";
-import { cn } from "@/lib/utils";
+import { Button, ButtonProps } from "@/components/ui";
+import { cn } from "@/shared/lib/utils";
 import { forwardRef, LegacyRef, ReactElement } from "react";
 
 type IconButtonProps = Omit<ButtonProps, "size"> & {

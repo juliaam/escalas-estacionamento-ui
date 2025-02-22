@@ -2,7 +2,7 @@ import { Button, ButtonProps } from "@/components/ui";
 import { cn } from "@/shared/lib/utils";
 import { forwardRef, LegacyRef, ReactElement } from "react";
 
-type IconButtonProps = Omit<ButtonProps, "size"> & {
+export type AppIconButtonProps = Omit<ButtonProps, "size"> & {
   icon: ReactElement;
   size?: number | string;
   className?: string;
@@ -10,7 +10,7 @@ type IconButtonProps = Omit<ButtonProps, "size"> & {
 
 export const AppIconButton = forwardRef(
   (
-    { variant = "ghost", icon, size, className, ...props }: IconButtonProps,
+    { variant = "ghost", icon, size, className, ...props }: AppIconButtonProps,
     ref: LegacyRef<HTMLButtonElement>
   ) => {
     return (

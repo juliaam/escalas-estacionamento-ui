@@ -10,6 +10,7 @@ export * from "./popover";
 export * from "./textarea";
 export * from "./dropdown-menu";
 export * from "./sidebar";
+export * from "./tooltip";
 export {
   Select as SelectShadCN,
   SelectContent,

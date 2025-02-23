@@ -26,7 +26,7 @@ export function ListCooperators({
   return (
     <>
       {title && <span className="text-xl">{title}</span>}
-      <AppInputSearch setInputValue={setInputValue} />
+      <AppInputSearch onChangeValue={setInputValue} />
       <div className="flex h-full flex-col overflow-auto scroll-smooth pr-6">
         {filteredResults?.map((cooperator) => {
           return (

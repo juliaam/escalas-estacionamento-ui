@@ -2,8 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Home } from "@/pages";
 import { MainLayoutWrapper } from "@/layouts/MainLayout";
-import { ManageCooperators } from "@/components/pages/Config/Config";
-
+import { ManageCooperators } from "@/components/ManageCooperators";
 const router = createBrowserRouter([
   {
     path: "/",

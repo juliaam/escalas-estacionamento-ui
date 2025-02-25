@@ -9,7 +9,7 @@ export function CooperatorUnselect() {
   return (
     <Card>
       <ListCooperators
-        title={<CardTitle text="Não escalados" icon={<UserX />} />}
+        title={<CardTitle text="Não escalados" icon={<UserX size={16} />} />}
         cooperators={cooperadores}
         cooperatorContent={(cooperator) => (
           <Button

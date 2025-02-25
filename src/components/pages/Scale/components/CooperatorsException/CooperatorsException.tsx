@@ -19,7 +19,10 @@ export function CooperatorsException({}: CooperatorsExceptionProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <Card>
-      <CardTitle text="Lista de excessões" icon={<MessageSquareWarning />} />
+      <CardTitle
+        text="Lista de excessões"
+        icon={<MessageSquareWarning size={16} />}
+      />
       <Button
         onClick={() => {
           setIsDialogOpen(true);

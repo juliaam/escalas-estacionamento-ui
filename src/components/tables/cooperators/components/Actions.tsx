@@ -25,13 +25,13 @@ export const CooperatorsActions = () => {
       <RemoveCooperatorModal isOpen={openDelete} setIsOpen={setOpenDelete} />
       <AppTooltipIconButton
         className="border border-black hover:bg-gray-700 hover:text-white"
-        icon={<Wrench />}
+        icon={<Wrench size={16} />}
         tooltip={<TooltipText text="Alterar Cooperador" />}
         onClick={onClickEdit}
       />
       <AppTooltipIconButton
         className="border border-black text-red-500 hover:bg-red-500 hover:text-white"
-        icon={<X />}
+        icon={<X size={16} />}
         tooltip={<TooltipText text="Excluir cooperador" />}
         onClick={onClickDelete}
       />

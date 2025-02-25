@@ -21,7 +21,9 @@ export function CooperatorsSelect() {
   return (
     <Card>
       <ListCooperators
-        title={<CardTitle text="Escalados" icon={<UserRoundCheck />} />}
+        title={
+          <CardTitle text="Escalados" icon={<UserRoundCheck size={16} />} />
+        }
         cooperators={selectedCooperators}
         cooperatorContent={(cooperator) => (
           <Button

@@ -25,7 +25,7 @@ export function AppInputSearch({ onChangeValue, className }: InputSearchProps) {
 
   return (
     <Input
-      placeholder="Pesquise... 🔍"
+      placeholder="🔍 Pesquise..."
       className={cn("bg-white", className)}
       value={value}
       onChange={handleSearch}

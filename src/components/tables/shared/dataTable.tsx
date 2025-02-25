@@ -11,8 +11,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 export function DataTable<TData>({ table }: DataTableProps<TData>) {
+  const actualPage = table.getState().pagination.pageIndex + 1;
   return (
     <div>
       <div className="rounded-md border">
@@ -66,21 +73,32 @@ export function DataTable<TData>({ table }: DataTableProps<TData>) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Anterior
+        <div>
+          <span>
+            Página {actualPage} de {table.getRowCount() / 10}
+          </span>
+        </div>
+        <Button variant="outline" size="icon" onClick={() => table.firstPage()}>
+          <ChevronsLeft />
         </Button>
         <Button
           variant="outline"
-          size="sm"
+          size="icon"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Próximo
+          <ChevronRight />
+        </Button>
+        <Button variant="outline" size="icon" onClick={() => table.lastPage()}>
+          <ChevronsRight />
         </Button>
       </div>
     </div>

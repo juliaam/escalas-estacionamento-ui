@@ -21,7 +21,7 @@ export const AppTooltipIconButton = ({
   return (
     <TooltipProvider>
       <Tooltip delayDuration={delayDuration}>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <AppIconButton icon={icon} {...props} />
         </TooltipTrigger>
         <TooltipContent>{tooltip}</TooltipContent>

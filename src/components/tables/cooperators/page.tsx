@@ -1,9 +1,8 @@
 import { AppInputSearch, Button } from "@/components/ui";
 import { Cooperator, cooperatorsColumns } from "./columns";
 import { DataTable } from "@/components/tables/shared/dataTable";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
-  FilterFn,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -11,19 +10,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { rankItem } from "@tanstack/match-sorter-utils";
+import { memo } from "react";
+import { coopsList } from "@/shared/mocks/cooperatorsList";
+
+type CooperatorsTableProps = {
+  onClickAddCooperator: () => any;
+};
+
 function getData(): Cooperator[] {
-  return [
-    {
-      id: "728ed52f",
-      name: "Rogério",
-      telephone: "21986450181",
-    },
-    {
-      id: "324fg57k",
-      name: "Júlia",
-      telephone: "21986450181",
-    },
-  ];
+  return coopsList;
 }
 
 function fuzzyFilter(
@@ -36,35 +31,36 @@ function fuzzyFilter(
     return false;
   }
 
-  return rankItem(value, filterValue).passed; // Apenas retorna true/false
+  return rankItem(value, filterValue).passed;
 }
 
-export const CooperatorsTable = () => {
-  const table = useReactTable({
-    columns: cooperatorsColumns,
-    enableGlobalFilter: true,
-    data: getData(),
-    globalFilterFn: fuzzyFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+export const CooperatorsTable = memo(
+  ({ onClickAddCooperator }: CooperatorsTableProps) => {
+    const table = useReactTable({
+      columns: cooperatorsColumns,
+      enableGlobalFilter: true,
+      data: getData(),
+      globalFilterFn: fuzzyFilter,
+      getCoreRowModel: getCoreRowModel(),
+      getFilteredRowModel: getFilteredRowModel(),
+      getPaginationRowModel: getPaginationRowModel(),
+    });
 
-  return (
-    <div className="flex flex-col gap-y-1">
-      <div className="flex items-end justify-between">
-        <div className="w-1/4">
-          <AppInputSearch
-            className="w-full"
-            onChangeValue={table.setGlobalFilter}
-          />
+    return (
+      <div className="flex flex-col gap-y-1">
+        <div className="flex items-end justify-between">
+          <div className="w-1/4">
+            <AppInputSearch
+              className="w-full"
+              onChangeValue={table.setGlobalFilter}
+            />
+          </div>
+          <Button onClick={onClickAddCooperator}>
+            Adicionar cooperador <Plus />
+          </Button>
         </div>
-
-        <Button>
-          Adicionar cooperador <Plus />
-        </Button>
+        <DataTable table={table} />
       </div>
-      <DataTable table={table} />
-    </div>
-  );
-};
+    );
+  }
+);

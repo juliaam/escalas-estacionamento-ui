@@ -1,4 +1,6 @@
-import { AppSidebar, Header } from "@/components";
+import { Header } from "@/components/Header/";
+import { AppSidebar } from "@/components/Sidebar";
+
 import { SidebarProvider } from "@/components/ui";
 import { ReactElement } from "react";
 import { Outlet } from "react-router-dom";
@@ -6,9 +8,9 @@ import { Outlet } from "react-router-dom";
 export function MainLayoutWrapper(): ReactElement {
   return (
     <SidebarProvider defaultOpen={false}>
-      <div className="h-screen w-screen overflow-x-hidden">
+      <div className="h-screen w-screen overflow-x-hidden bg-zinc-100">
         <Header />
-        <main className="px-20">
+        <main className="px-5">
           <Outlet />
         </main>
       </div>

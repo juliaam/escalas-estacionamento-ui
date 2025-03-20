@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import { memo } from "react";
-import { coopsList } from "@/shared/mocks/cooperatorsList";
+import { coopsList } from "@/shared/mocks/coopsList";
 
 type CooperatorsTableProps = {
   onClickAddCooperator: () => any;

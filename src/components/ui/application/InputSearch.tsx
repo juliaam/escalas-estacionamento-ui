@@ -1,7 +1,7 @@
 import { ChangeEvent, useMemo, useState } from "react";
-import { Input } from "@/components/ui";
 import debounce from "lodash.debounce";
-import { cn } from "@/shared/lib/utils";
+import { InputIcon } from "./InputIcon";
+import { Search } from "lucide-react";
 
 export interface InputSearchProps {
   onChangeValue: (value: string) => any;
@@ -24,9 +24,10 @@ export function AppInputSearch({ onChangeValue, className }: InputSearchProps) {
   );
 
   return (
-    <Input
-      placeholder="🔍 Pesquise..."
-      className={cn("bg-white", className)}
+    <InputIcon
+      icon={<Search className="size-4 text-emerald-300" />}
+      placeholder="Buscar cooperadores..."
+      className={className}
       value={value}
       onChange={handleSearch}
     />

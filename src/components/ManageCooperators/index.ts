@@ -1,1 +1,1 @@
-export * from "./ManageCooperators";
+export * from "../../pages/ManageCooperators";

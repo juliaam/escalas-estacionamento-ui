@@ -5,7 +5,6 @@ import ExceptionList from "@/components/ExceptionList/ExceptionList";
 import ScheduleAssignmentList from "@/components/ScheduleAssignmentList/ScheduleAssignmentList";
 import { Button } from "@/components/ui/button";
 import { Users2 } from "lucide-react";
-import { ExceptionData } from "@/shared/types/Exception";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
 
 interface ScaleLayoutProps {

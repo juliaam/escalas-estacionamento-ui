@@ -25,7 +25,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
 
   const { watch, setValue } = useFormContext();
 
-  const selectedCooperatorIds = watch("selectedCooperators") || [];
+  const selectedCooperatorsId = watch("cooperatorsIds") || [];
 
   const filteredCooperators = allCooperators.filter(
     (coop) =>
@@ -34,11 +34,11 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
   );
 
   const selectedCooperators = filteredCooperators.filter((coop) =>
-    selectedCooperatorIds.includes(coop.id)
+    selectedCooperatorsId.includes(coop.id)
   );
 
   const unselectedCooperators = filteredCooperators.filter(
-    (coop) => !selectedCooperatorIds.includes(coop.id)
+    (coop) => !selectedCooperatorsId.includes(coop.id)
   );
 
   const displayCooperators =
@@ -47,11 +47,11 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
       : selectedCooperators;
 
   const onToggle = (coopId: string) => {
-    const newSelected = selectedCooperatorIds.includes(coopId)
-      ? selectedCooperatorIds.filter((id: string) => id !== coopId)
-      : [...selectedCooperatorIds, coopId];
+    const cooperatorsIds: string[] = selectedCooperatorsId.includes(coopId)
+      ? selectedCooperatorsId.filter((id: string) => id !== coopId)
+      : [...selectedCooperatorsId, coopId];
 
-    setValue("selectedCooperators", newSelected, { shouldValidate: true });
+    setValue("cooperatorsIds", cooperatorsIds, { shouldValidate: true });
   };
 
   return (
@@ -87,7 +87,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
               <UserCheck className="h-3 w-3" />
               <span className="hidden sm:inline">Selecionados</span>
               <span className="ml-1 rounded-full bg-primary/10 px-1 py-0.5 text-xs text-primary">
-                {selectedCooperatorIds.length}
+                {selectedCooperatorsId.length}
               </span>
             </TabsTrigger>
           </TabsList>
@@ -97,7 +97,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
       <div className="mb-2 px-0.5 text-xs text-muted-foreground">
         {activeTab === "all"
           ? `${filteredCooperators.length} cooperadores encontrados`
-          : `${selectedCooperatorIds.length} cooperadores selecionados`}
+          : `${selectedCooperatorsId.length} cooperadores selecionados`}
       </div>
 
       <ScrollArea className="-mx-1 flex-1 px-1 pr-4">
@@ -107,7 +107,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
               <CooperatorCard
                 key={cooperator.id}
                 cooperator={cooperator}
-                isSelected={selectedCooperatorIds.includes(cooperator.id)}
+                isSelected={selectedCooperatorsId.includes(cooperator.id)}
                 onToggle={onToggle}
                 onAddException={onAddException}
                 onAddAssignment={onAddAssignment}

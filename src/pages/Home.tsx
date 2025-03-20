@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ExceptionModal from "@/components/ExceptionModal/ExceptionModal";
 import ScheduleAssignmentModal, {
   AssignmentData,
 } from "@/components/ScheduleAssignmentModal/ScheduleAssignmentModal";
 import ScaleLayout from "@/components/ScaleLayout/ScaleLayout";
 import { FormProvider, useForm } from "react-hook-form";
-import type { ExceptionData } from "@/shared/types/Exception";
 import { toast } from "sonner";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
+import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 
 const Home = () => {
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
@@ -19,7 +19,7 @@ const Home = () => {
   const [selectedCooperatorForAssignment, setSelectedCooperatorForAssignment] =
     useState("");
 
-  const methods = useForm();
+  const methods = useForm<ScaleFormValues>();
   const { handleSubmit } = methods;
 
   const cooperatorsWithFlags = mockCooperators.map((cooperator) => ({
@@ -43,8 +43,13 @@ const Home = () => {
   };
 
   const handleAddException = () => {
-    setSelectedCooperatorForException(null);
+    console.log("aqui");
+    setSelectedCooperatorForException("");
     setIsExceptionModalOpen(true);
+  };
+
+  const addException = () => {
+    console.log("add");
   };
 
   const handleRemoveException = (id: string) => {
@@ -56,7 +61,7 @@ const Home = () => {
     toast.success("Agendamento removido");
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: ScaleFormValues) => {
     console.log(data);
   };
 
@@ -82,6 +87,10 @@ const Home = () => {
           onClose={() => setIsExceptionModalOpen(false)}
           cooperators={mockCooperators}
           selectedCooperatorId={selectedCooperatorForException}
+          setCooperatorId={(coopId: string) => {
+            setSelectedCooperatorForException(coopId);
+          }}
+          onSave={(exception) => ""}
         />
 
         <ScheduleAssignmentModal

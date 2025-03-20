@@ -14,14 +14,14 @@ export interface Cooperator {
   hasAssignments?: boolean;
 }
 
-interface CooperatorCardProps {
+type CooperatorCardProps = {
   cooperator: Cooperator;
   isSelected: boolean;
   onToggle: (id: string) => void;
   onAddException: (id: string) => void;
   onAddAssignment: (id: string) => void;
   className?: string;
-}
+};
 
 const CooperatorCard: React.FC<CooperatorCardProps> = ({
   cooperator,
@@ -89,6 +89,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
       <div className="ml-2 flex items-center space-x-2">
         {isSelected ? (
           <button
+            type="button"
             onClick={() => onToggle(cooperator.id)}
             className="rounded-full p-1.5 text-destructive transition-colors hover:bg-destructive/10"
             aria-label="Remover cooperador"
@@ -97,6 +98,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => onToggle(cooperator.id)}
             className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-primary/90"
           >
@@ -105,6 +107,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
         )}
 
         <button
+          type="button"
           onClick={() => onAddException(cooperator.id)}
           className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-secondary-foreground/10"
           aria-label="Adicionar exceção"

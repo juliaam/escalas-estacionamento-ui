@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -18,11 +17,15 @@ import {
 } from "@/components/ui/select";
 import DatePicker from "@/components/DatePicker/DatePicker";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
-import { ExceptionData } from "@/shared/types/Exception";
+import { Textarea } from "../ui";
+import { Exception } from "@/shared/types/Exception";
+import { Period } from "@/shared/enums/period";
 
 interface ExceptionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSave: (exception: Exception) => void;
+  setCooperatorId: (coopId: string) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
 }
@@ -30,35 +33,22 @@ interface ExceptionModalProps {
 const ExceptionModal: React.FC<ExceptionModalProps> = ({
   isOpen,
   onClose,
+  onSave,
   cooperators,
+  setCooperatorId,
   selectedCooperatorId,
 }) => {
-  const [exceptionType, setExceptionType] = useState<"one-time" | "recurring">(
-    "one-time"
-  );
-  const [cooperatorId, setCooperatorId] = useState(selectedCooperatorId || "");
-  const [exceptionDate, setExceptionDate] = useState<Date | undefined>(
-    undefined
-  );
-  const [weekday, setWeekday] = useState<string>("");
-
-  const handleSave = () => {
-    if (!cooperatorId) return;
-
-    const exceptionData: ExceptionData = {
-      type: exceptionType,
-      cooperatorId,
-      ...(exceptionType === "one-time" ? { date: exceptionDate } : { weekday }),
-    };
-
-    handleClose();
-  };
+  const [formData, setFormData] = useState<{
+    date: Date | undefined;
+    reason: string;
+    period: "day" | "night";
+  }>({
+    date: undefined,
+    reason: "",
+    period: "day",
+  });
 
   const handleClose = () => {
-    setExceptionType("one-time");
-    setCooperatorId(selectedCooperatorId || "");
-    setExceptionDate(undefined);
-    setWeekday("");
     onClose();
   };
 
@@ -75,7 +65,7 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
           <div className="grid gap-2">
             <Label htmlFor="cooperator">Cooperador</Label>
             <Select
-              value={cooperatorId}
+              value={selectedCooperatorId}
               onValueChange={setCooperatorId}
               disabled={!!selectedCooperatorId}
             >
@@ -92,33 +82,55 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
             </Select>
           </div>
 
-          <div className="grid gap-2">
-            <Label>Tipo de Exceção</Label>
-            <RadioGroup
-              value={exceptionType}
-              onValueChange={(v) =>
-                setExceptionType(v as "one-time" | "recurring")
-              }
-              className="flex flex-col space-y-1"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="one-time" id="one-time" />
-                <Label
-                  htmlFor="one-time"
-                  className="cursor-pointer font-normal"
-                >
-                  Data específica
-                </Label>
-              </div>
-            </RadioGroup>
+          <div className="flex">
+            <div className="grid gap-2">
+              <Label>Data da Exceção</Label>
+              <DatePicker
+                date={formData.date}
+                onSelect={(date: Date | undefined) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    date: date,
+                  }))
+                }
+                label="Selecione a data"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Período</Label>
+              <Select
+                value={formData.period}
+                onValueChange={(value: "day" | "night") => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    period: value,
+                  }));
+                }}
+              >
+                <SelectTrigger id="cooperator">
+                  <SelectValue placeholder="Selecione um cooperador" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Period.values.map((period) => (
+                    <SelectItem key={period} value={period}>
+                      {Period.getLabel(period)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="grid gap-2">
-            <Label>Data da Exceção</Label>
-            <DatePicker
-              date={exceptionDate}
-              onSelect={setExceptionDate}
-              label="Selecione a data"
+            <Label>Motivo (opcional)</Label>
+            <Textarea
+              value={formData.reason}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  reason: event.currentTarget.value,
+                }))
+              }
             />
           </div>
         </div>
@@ -127,7 +139,14 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
           <Button variant="outline" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={handleSave}>Salvar Exceção</Button>
+          <Button
+            onClick={onSave({
+              cooperator_id: selectedCooperatorId,
+              ...formData,
+            })}
+          >
+            Salvar Exceção
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,5 +1,5 @@
-export type ExceptionData = {
-  cooperatorId: string;
+export type Exception = {
+  cooperator_id: string;
   date: Date;
   period: string;
   reason?: string;

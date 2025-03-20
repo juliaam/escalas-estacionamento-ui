@@ -37,8 +37,7 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
           <div>
             <CardTitle className="text-lg">Exceções</CardTitle>
             <CardDescription className="text-xs">
-              Adicione dias específicos ou recorrentes onde um cooperador não
-              pode participar
+              Adicione exceções
             </CardDescription>
           </div>
           <Button onClick={onAddException} size="sm" className="gap-1">
@@ -107,8 +106,8 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
                 Nenhuma exceção adicionada
               </h3>
               <p className="mb-2 max-w-xs text-xs text-muted-foreground">
-                Adicione exceções para dias específicos ou recorrentes onde um
-                cooperador não pode participar da escala.
+                Adicione exceções para dias específicos para cooperador já
+                escalados.
               </p>
               <Button
                 onClick={onAddException}

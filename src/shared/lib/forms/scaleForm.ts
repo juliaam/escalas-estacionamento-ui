@@ -1,5 +1,6 @@
 import { CooperatorId } from "@/shared/types/Cooperator";
 import { Exception } from "@/shared/types/Exception";
+import { format } from "date-fns";
 
 export type CooperatorBodyForm = {
   id: string;
@@ -19,7 +20,7 @@ type AssignmentsCooperators = {
 
 export type ScaleFormValues = {
   name: string;
-  month: string;
+  date: string;
   cooperatorsIds: CooperatorId[];
   assignments: AssignmentsCooperators[];
   exceptions: Exception[];
@@ -28,7 +29,7 @@ export type ScaleFormValues = {
 class ScaleForm {
   public initialValues: ScaleFormValues = {
     name: "",
-    month: "",
+    date: format(new Date(), "yyyy-MM"),
     cooperatorsIds: [],
     exceptions: [],
     assignments: [],

@@ -21,7 +21,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
   className,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "selected">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "selected">("selected");
 
   const { watch, setValue } = useFormContext();
 

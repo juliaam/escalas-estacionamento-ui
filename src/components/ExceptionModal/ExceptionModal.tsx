@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,11 +20,16 @@ import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { Textarea } from "../ui";
 import { Exception } from "@/shared/types/Exception";
 import { Period } from "@/shared/enums/period";
+import { useController, useForm } from "react-hook-form";
+import {
+  exceptionForm,
+  ExceptionsFormValues,
+} from "@/shared/lib/forms/exceptionForm";
 
 interface ExceptionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (exception: Exception) => void;
+  onSave: (exception: ExceptionsFormValues) => void;
   setCooperatorId: (coopId: string) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
@@ -38,116 +43,109 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   setCooperatorId,
   selectedCooperatorId,
 }) => {
-  const [formData, setFormData] = useState<{
-    date: Date | undefined;
-    reason: string;
-    period: "day" | "night";
-  }>({
-    date: undefined,
-    reason: "",
-    period: "day",
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+    ...methods
+  } = useForm<ExceptionsFormValues>({
+    defaultValues: exceptionForm.initialValues,
   });
+  const {
+    field: { value: cooperatorId, onChange: onChangeCooperatorId },
+  } = useController({ name: "cooperator_id", control });
+  const {
+    field: { value: date, onChange: onChangeDate },
+  } = useController({ name: "date", control });
+  const {
+    field: { value: period, onChange: onChangePeriod },
+  } = useController({ name: "period", control });
+  const {
+    field: { value: reason, onChange: onChangeReason },
+  } = useController({ name: "reason", control });
 
-  const handleClose = () => {
-    onClose();
+  const onSubmit = (data: ExceptionsFormValues) => {
+    onSave(data);
   };
+
+  useEffect(() => {
+    if (selectedCooperatorId) {
+      onChangeCooperatorId(selectedCooperatorId);
+    }
+  }, [selectedCooperatorId]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="animate-slide-up sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
-            Adicionar Exceção
-          </DialogTitle>
-        </DialogHeader>
+        <form {...methods} onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Adicionar Exceção
+            </DialogTitle>
+          </DialogHeader>
 
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="cooperator">Cooperador</Label>
-            <Select
-              value={selectedCooperatorId}
-              onValueChange={setCooperatorId}
-              disabled={!!selectedCooperatorId}
-            >
-              <SelectTrigger id="cooperator">
-                <SelectValue placeholder="Selecione um cooperador" />
-              </SelectTrigger>
-              <SelectContent>
-                {cooperators.map((cooperator) => (
-                  <SelectItem key={cooperator.id} value={cooperator.id}>
-                    {cooperator.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex">
+          <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label>Data da Exceção</Label>
-              <DatePicker
-                date={formData.date}
-                onSelect={(date: Date | undefined) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    date: date,
-                  }))
-                }
-                label="Selecione a data"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>Período</Label>
+              <Label htmlFor="cooperator">Cooperador</Label>
               <Select
-                value={formData.period}
-                onValueChange={(value: "day" | "night") => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    period: value,
-                  }));
-                }}
+                value={cooperatorId}
+                onValueChange={setCooperatorId}
+                disabled={!!cooperatorId}
               >
                 <SelectTrigger id="cooperator">
                   <SelectValue placeholder="Selecione um cooperador" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Period.values.map((period) => (
-                    <SelectItem key={period} value={period}>
-                      {Period.getLabel(period)}
+                  {cooperators.map((cooperator) => (
+                    <SelectItem key={cooperator.id} value={cooperator.id}>
+                      {cooperator.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="flex w-full gap-x-2">
+              <div className="grid flex-1 gap-2">
+                <Label>Data da Exceção</Label>
+                <DatePicker
+                  date={date}
+                  onSelect={onChangeDate}
+                  label="Selecione a data"
+                />
+              </div>
+              <div className="grid w-full flex-1 gap-2">
+                <Label>Período</Label>
+                <Select value={period} onValueChange={onChangePeriod}>
+                  <SelectTrigger id="cooperator">
+                    <SelectValue placeholder="Selecione um cooperador" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Period.values.map((period) => (
+                      <SelectItem key={period} value={period}>
+                        {Period.getLabel(period)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Motivo (opcional)</Label>
+              <Textarea value={reason} onChange={onChangeReason} />
+            </div>
           </div>
 
-          <div className="grid gap-2">
-            <Label>Motivo (opcional)</Label>
-            <Textarea
-              value={formData.reason}
-              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  reason: event.currentTarget.value,
-                }))
-              }
-            />
-          </div>
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button
-            onClick={onSave({
-              cooperator_id: selectedCooperatorId,
-              ...formData,
-            })}
-          >
-            Salvar Exceção
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button variant="outline" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button type="submit">Salvar Exceção</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -4,6 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/shared/lib/utils";
 import { X, Clock, Calendar } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 
 export interface Cooperator {
   id: string;
@@ -106,22 +111,40 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
           </button>
         )}
 
-        <button
-          type="button"
-          onClick={() => onAddException(cooperator.id)}
-          className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-secondary-foreground/10"
-          aria-label="Adicionar exceção"
-        >
-          <Clock className="h-4 w-4" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              disabled={!isSelected}
+              data-disabled={!isSelected}
+              onClick={() => onAddException(cooperator.id)}
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-secondary-foreground/10 data-[disabled=true]:pointer-events-none"
+              aria-label="Adicionar exceção"
+            >
+              <Clock className="h-4 w-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="rounded-md bg-gray-50 px-2 py-1 text-black">
+            Adicionar exceção
+          </TooltipContent>
+        </Tooltip>
 
-        <button
-          onClick={() => onAddAssignment(cooperator.id)}
-          className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-secondary-foreground/10"
-          aria-label="Agendar cooperador"
-        >
-          <Calendar className="h-4 w-4" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              disabled={!isSelected}
+              data-disabled={!isSelected}
+              onClick={() => onAddAssignment(cooperator.id)}
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-secondary-foreground/10 data-[disabled=true]:pointer-events-none"
+              aria-label="Agendar cooperador"
+            >
+              <Calendar className="h-4 w-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="rounded-md bg-gray-50 px-2 py-1 text-black">
+            Adicionar agendamento
+          </TooltipContent>
+        </Tooltip>
       </div>
     </Card>
   );

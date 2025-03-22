@@ -18,10 +18,11 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({
   monthName,
   className,
 }) => {
-  const { register, control } = useFormContext();
+  const { register, control, setValue } = useFormContext();
   const {
-    field: { onChange, value },
+    field: { value },
   } = useController({ name: monthName, control });
+
   return (
     <div className={cn("space-y-6", className)}>
       <div className="flex items-center justify-end">
@@ -46,7 +47,12 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="flex-1 space-y-2">
             <Label htmlFor="month">Escolha o mês da escala</Label>
-            <MonthPicker value={value} onChange={onChange} />
+            <MonthPicker
+              value={value}
+              onChange={(date: string) => {
+                setValue(monthName, date);
+              }}
+            />
           </div>
         </div>
       </div>

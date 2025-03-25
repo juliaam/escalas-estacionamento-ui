@@ -13,14 +13,14 @@ import {
 interface DatePickerProps {
   date: Date | undefined;
   onSelect: (date: Date | undefined) => void;
-  label?: string;
+  placeholder?: string;
   className?: string;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
   date,
   onSelect,
-  label = "Selecionar data",
+  placeholder = "Selecionar data",
   className,
 }) => {
   return (
@@ -35,7 +35,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "dd/MM/yyyy") : <span>{label}</span>}
+          {date ? format(date, "dd/MM/yyyy") : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

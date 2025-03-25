@@ -13,10 +13,12 @@ import { Calendar, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { cn } from "@/shared/lib/utils";
-import { ExceptionData } from "@/shared/types/Exception";
+import { Exception } from "@/shared/types/Exception";
+import { useFormContext } from "react-hook-form";
+import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 
 interface ExceptionListProps {
-  exceptions: Array<ExceptionData & { id: string }>;
+  exceptions: Exception[];
   cooperators: Cooperator[];
   onAddException: () => void;
   onRemoveException: (id: string) => void;
@@ -30,17 +32,21 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
   onRemoveException,
   className,
 }) => {
+  const { watch } = useFormContext<ScaleFormValues>();
+  const selectedCooperators = watch("cooperatorsIds");
   return (
     <Card className={cn("flex h-full flex-col", className)}>
       <CardHeader className="flex-shrink-0 pb-2">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg">Exceções</CardTitle>
-            <CardDescription className="text-xs">
-              Adicione exceções
-            </CardDescription>
           </div>
-          <Button onClick={onAddException} size="sm" className="gap-1">
+          <Button
+            onClick={onAddException}
+            disabled={!selectedCooperators.length}
+            size="sm"
+            className="gap-1"
+          >
             <Plus className="h-4 w-4" />
             <span>Adicionar</span>
           </Button>
@@ -52,12 +58,12 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
             <div className="space-y-2 pr-2">
               {exceptions.map((exception) => {
                 const cooperator = cooperators?.find(
-                  (c) => c.id === exception.cooperatorId
+                  (c) => c.id === exception.cooperator_id
                 );
 
                 return (
                   <div
-                    key={exception.id}
+                    key={exception.cooperator_id}
                     className="group flex items-center gap-3 rounded-md bg-secondary p-3"
                   >
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-secondary-foreground/5">
@@ -89,7 +95,9 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
-                      onClick={() => onRemoveException?.(exception.id)}
+                      onClick={() =>
+                        onRemoveException?.(exception.cooperator_id)
+                      }
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -106,14 +114,15 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
                 Nenhuma exceção adicionada
               </h3>
               <p className="mb-2 max-w-xs text-xs text-muted-foreground">
-                Adicione exceções para dias específicos para cooperador já
-                escalados.
+                Adicione exceções para dias específicos no qual haja
+                cooperadores já escalados
               </p>
               <Button
                 onClick={onAddException}
                 variant="outline"
                 size="sm"
                 className="gap-1"
+                disabled={!selectedCooperators.length}
               >
                 <Plus className="h-3 w-3" />
                 <span>Adicionar Exceção</span>

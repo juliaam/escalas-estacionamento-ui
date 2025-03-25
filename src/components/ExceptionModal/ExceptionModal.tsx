@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -46,10 +46,8 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   const {
     handleSubmit,
     control,
-    setValue,
-    watch,
     formState: { errors },
-    ...methods
+    reset,
   } = useForm<ExceptionsFormValues>({
     defaultValues: exceptionForm.initialValues,
   });
@@ -67,7 +65,9 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   } = useController({ name: "reason", control });
 
   const onSubmit = (data: ExceptionsFormValues) => {
+    console.log("cheguei!", data);
     onSave(data);
+    reset();
   };
 
   useEffect(() => {
@@ -79,64 +79,62 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="animate-slide-up sm:max-w-[425px]">
-        <form {...methods} onSubmit={handleSubmit(onSubmit)}>
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">
               Adicionar Exceção
             </DialogTitle>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="cooperator">Cooperador</Label>
-              <Select
-                value={cooperatorId}
-                onValueChange={setCooperatorId}
-                disabled={!!cooperatorId}
-              >
+          <div className="grid gap-2">
+            <Label htmlFor="cooperator">Cooperador</Label>
+            <Select
+              value={cooperatorId}
+              onValueChange={setCooperatorId}
+              disabled={!!cooperatorId}
+            >
+              <SelectTrigger id="cooperator">
+                <SelectValue placeholder="Selecione um cooperador" />
+              </SelectTrigger>
+              <SelectContent>
+                {cooperators.map((cooperator) => (
+                  <SelectItem key={cooperator.id} value={cooperator.id}>
+                    {cooperator.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex w-full gap-x-2">
+            <div className="grid flex-1 gap-2">
+              <Label>Data da Exceção</Label>
+              <DatePicker
+                date={date}
+                onSelect={onChangeDate}
+                placeholder="Selecione a data"
+              />
+            </div>
+            <div className="grid w-full flex-1 gap-2">
+              <Label>Período</Label>
+              <Select value={period} onValueChange={onChangePeriod}>
                 <SelectTrigger id="cooperator">
                   <SelectValue placeholder="Selecione um cooperador" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cooperators.map((cooperator) => (
-                    <SelectItem key={cooperator.id} value={cooperator.id}>
-                      {cooperator.name}
+                  {Period.values.map((period) => (
+                    <SelectItem key={period} value={period}>
+                      {Period.getLabel(period)}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+          </div>
 
-            <div className="flex w-full gap-x-2">
-              <div className="grid flex-1 gap-2">
-                <Label>Data da Exceção</Label>
-                <DatePicker
-                  date={date}
-                  onSelect={onChangeDate}
-                  label="Selecione a data"
-                />
-              </div>
-              <div className="grid w-full flex-1 gap-2">
-                <Label>Período</Label>
-                <Select value={period} onValueChange={onChangePeriod}>
-                  <SelectTrigger id="cooperator">
-                    <SelectValue placeholder="Selecione um cooperador" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Period.values.map((period) => (
-                      <SelectItem key={period} value={period}>
-                        {Period.getLabel(period)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="grid gap-2">
-              <Label>Motivo (opcional)</Label>
-              <Textarea value={reason} onChange={onChangeReason} />
-            </div>
+          <div className="grid gap-2">
+            <Label>Motivo (opcional)</Label>
+            <Textarea value={reason} onChange={onChangeReason} />
           </div>
 
           <DialogFooter>

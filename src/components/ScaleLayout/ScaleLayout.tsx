@@ -6,6 +6,7 @@ import ScheduleAssignmentList from "@/components/ScheduleAssignmentList/Schedule
 import { Button } from "@/components/ui/button";
 import { Users2 } from "lucide-react";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
+import { Exception } from "@/shared/types/Exception";
 
 interface ScaleLayoutProps {
   // Scale details
@@ -18,7 +19,7 @@ interface ScaleLayoutProps {
   onAddAssignmentForCooperator: (id: string) => void;
 
   // Exceptions
-  exceptions: Array<ExceptionData & { id: string }>;
+  exceptions: Exception[];
   onAddException: () => void;
   onRemoveException: (id: string) => void;
 

@@ -1,20 +1,19 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ExceptionModal from "@/components/ExceptionModal/ExceptionModal";
 import ScheduleAssignmentModal, {
   AssignmentData,
 } from "@/components/ScheduleAssignmentModal/ScheduleAssignmentModal";
 import ScaleLayout from "@/components/ScaleLayout/ScaleLayout";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { scaleForm, ScaleFormValues } from "@/shared/lib/forms/scaleForm";
-import { Exception } from "@/shared/types/Exception";
 import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
+import { Exception } from "@/shared/types/Exception";
 
 const Home = () => {
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
-  const [exceptions, setExceptions] = useState<ExceptionData[]>([]);
   const [assignments, setAssignments] = useState<AssignmentData[]>([]);
   const [selectedCooperatorForException, setSelectedCooperatorForException] =
     useState("");
@@ -24,12 +23,14 @@ const Home = () => {
   const methods = useForm<ScaleFormValues>({
     defaultValues: scaleForm.initialValues,
   });
-  const { handleSubmit, setValue, getValues } = methods;
+  const { handleSubmit, setValue, getValues, watch } = methods;
+  const exceptions: Exception[] = watch("exceptions");
+  const cooperatorsIds: string[] = watch("cooperatorsIds");
 
   const cooperatorsWithFlags = mockCooperators.map((cooperator) => ({
     ...cooperator,
     hasExceptions: exceptions.some(
-      (exception) => exception.cooperatorId === cooperator.id
+      (exception) => exception.cooperator_id === cooperator.id
     ),
     hasAssignments: assignments.some(
       (assignment) => assignment.cooperatorId === cooperator.id
@@ -47,7 +48,6 @@ const Home = () => {
   };
 
   const handleAddException = () => {
-    console.log("aqui");
     setSelectedCooperatorForException("");
     setIsExceptionModalOpen(true);
   };
@@ -72,17 +72,26 @@ const Home = () => {
     }
 
     setValue("exceptions", newValue);
+    setSelectedCooperatorForException("");
     setIsExceptionModalOpen(false);
   };
 
   const handleRemoveException = (id: string) => {
-    // ver isso posteriormente
+    const exceptions = getValues("exceptions");
+    const newValue = exceptions.filter((except) => except.cooperator_id !== id);
+
+    setValue("exceptions", newValue);
     toast.success("Exceção removida");
   };
 
   const handleRemoveAssignment = (id: string) => {
     toast.success("Agendamento removido");
   };
+
+  const cooperatorsSelected = useMemo(
+    () => mockCooperators.filter((coop) => cooperatorsIds.includes(coop.id)),
+    [cooperatorsIds]
+  );
 
   const onSubmit = (data: ScaleFormValues) => {
     console.log(data);
@@ -110,20 +119,26 @@ const Home = () => {
 
       <ExceptionModal
         isOpen={isExceptionModalOpen}
-        onClose={() => setIsExceptionModalOpen(false)}
-        cooperators={mockCooperators}
+        cooperators={cooperatorsSelected}
         selectedCooperatorId={selectedCooperatorForException}
         setCooperatorId={(coopId: string) => {
           setSelectedCooperatorForException(coopId);
+        }}
+        onClose={() => {
+          setSelectedCooperatorForException("");
+          setIsExceptionModalOpen(false);
         }}
         onSave={onSaveException}
       />
 
       <ScheduleAssignmentModal
         isOpen={isAssignmentModalOpen}
-        onClose={() => setIsAssignmentModalOpen(false)}
-        cooperators={mockCooperators}
+        cooperators={cooperatorsSelected}
         selectedCooperatorId={selectedCooperatorForAssignment}
+        onClose={() => {
+          setSelectedCooperatorForAssignment("");
+          setIsAssignmentModalOpen(false);
+        }}
       />
     </>
   );

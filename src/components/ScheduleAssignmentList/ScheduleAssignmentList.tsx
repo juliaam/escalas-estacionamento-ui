@@ -13,6 +13,8 @@ import { format } from "date-fns";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { AssignmentData } from "@/components/ScheduleAssignmentModal/ScheduleAssignmentModal";
 import { cn } from "@/shared/lib/utils";
+import { useFormContext } from "react-hook-form";
+import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 
 interface ScheduleAssignmentListProps {
   assignments: AssignmentData[];
@@ -29,17 +31,21 @@ const ScheduleAssignmentList: React.FC<ScheduleAssignmentListProps> = ({
   onRemoveAssignment,
   className,
 }) => {
+  const { watch } = useFormContext<ScaleFormValues>();
+  const selectedCooperators = watch("cooperatorsIds");
   return (
     <Card className={cn("flex h-full flex-col", className)}>
       <CardHeader className="flex-shrink-0 pb-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-x-2">
           <div>
             <CardTitle className="text-lg">Agendamentos</CardTitle>
-            <CardDescription className="text-xs">
-              Adicione datas específicas onde um cooperador deve participar
-            </CardDescription>
           </div>
-          <Button onClick={onAddAssignment} size="sm" className="gap-1">
+          <Button
+            disabled={!selectedCooperators.length}
+            onClick={onAddAssignment}
+            size="sm"
+            className="gap-1"
+          >
             <Plus className="h-4 w-4" />
             <span>Adicionar</span>
           </Button>
@@ -97,6 +103,7 @@ const ScheduleAssignmentList: React.FC<ScheduleAssignmentListProps> = ({
                 deve participar da escala.
               </p>
               <Button
+                disabled={!selectedCooperators.length}
                 onClick={onAddAssignment}
                 variant="outline"
                 size="sm"

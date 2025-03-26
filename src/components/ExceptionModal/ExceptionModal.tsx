@@ -18,13 +18,16 @@ import {
 import DatePicker from "@/components/DatePicker/DatePicker";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { Textarea } from "../ui";
-import { Exception } from "@/shared/types/Exception";
 import { Period } from "@/shared/enums/period";
-import { useController, useForm } from "react-hook-form";
+import { useController, useForm, useFormContext } from "react-hook-form";
 import {
   exceptionForm,
   ExceptionsFormValues,
 } from "@/shared/lib/forms/exceptionForm";
+import {
+  filterWedsnesdayAndSundaysInMonth,
+  getWedsnesdayAndSundaysInMonth,
+} from "@/shared/utils/getChurchDays";
 
 interface ExceptionModalProps {
   isOpen: boolean;
@@ -43,17 +46,17 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   setCooperatorId,
   selectedCooperatorId,
 }) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm<ExceptionsFormValues>({
-    defaultValues: exceptionForm.initialValues,
+  const { getValues, watch } = useFormContext();
+  const { handleSubmit, control, reset } = useForm<ExceptionsFormValues>({
+    defaultValues: exceptionForm.initialValues(getValues("date")),
   });
   const {
     field: { value: cooperatorId, onChange: onChangeCooperatorId },
-  } = useController({ name: "cooperator_id", control });
+  } = useController({
+    name: "cooperator_id",
+    control,
+    defaultValue: selectedCooperatorId,
+  });
   const {
     field: { value: date, onChange: onChangeDate },
   } = useController({ name: "date", control });
@@ -63,9 +66,9 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   const {
     field: { value: reason, onChange: onChangeReason },
   } = useController({ name: "reason", control });
+  const selectedDateForScale: Date = watch("date");
 
   const onSubmit = (data: ExceptionsFormValues) => {
-    console.log("cheguei!", data);
     onSave(data);
     reset();
   };
@@ -75,6 +78,10 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
       onChangeCooperatorId(selectedCooperatorId);
     }
   }, [selectedCooperatorId]);
+
+  useEffect(() => {
+    onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
+  }, [selectedDateForScale]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -110,6 +117,8 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
             <div className="grid flex-1 gap-2">
               <Label>Data da Exceção</Label>
               <DatePicker
+                month={selectedDateForScale}
+                disabled={filterWedsnesdayAndSundaysInMonth()}
                 date={date}
                 onSelect={onChangeDate}
                 placeholder="Selecione a data"

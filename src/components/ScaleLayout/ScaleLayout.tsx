@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Users2 } from "lucide-react";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { Exception } from "@/shared/types/Exception";
+import { Assignments } from "@/shared/types/Assignaments";
+import { AssignmentsCooperators } from "@/shared/lib/forms/scaleForm";
 
 interface ScaleLayoutProps {
   // Scale details
@@ -24,27 +26,20 @@ interface ScaleLayoutProps {
   onRemoveException: (id: string) => void;
 
   // Assignments
-  assignments: Array<{ id: string; cooperatorId: string; date: Date }>;
+  assignments: AssignmentsCooperators[];
   onAddAssignment: () => void;
   onRemoveAssignment: (id: string) => void;
 }
 
 const ScaleLayout: React.FC<ScaleLayoutProps> = ({
-  // Scale details
   scaleName,
   monthName,
-
-  // Cooperators
   cooperatorsWithFlags,
   onAddExceptionForCooperator,
   onAddAssignmentForCooperator,
-
-  // Exceptions
   exceptions,
   onAddException,
   onRemoveException,
-
-  // Assignments
   assignments,
   onAddAssignment,
   onRemoveAssignment,

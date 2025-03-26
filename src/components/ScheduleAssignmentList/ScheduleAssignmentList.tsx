@@ -11,13 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
-import { AssignmentData } from "@/components/ScheduleAssignmentModal/ScheduleAssignmentModal";
 import { cn } from "@/shared/lib/utils";
 import { useFormContext } from "react-hook-form";
-import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
+import {
+  AssignmentsCooperators,
+  ScaleFormValues,
+} from "@/shared/lib/forms/scaleForm";
 
 interface ScheduleAssignmentListProps {
-  assignments: AssignmentData[];
+  assignments: AssignmentsCooperators[];
   cooperators: Cooperator[];
   onAddAssignment: () => void;
   onRemoveAssignment: (id: string) => void;
@@ -57,12 +59,12 @@ const ScheduleAssignmentList: React.FC<ScheduleAssignmentListProps> = ({
             <div className="space-y-2 pr-2">
               {assignments.map((assignment) => {
                 const cooperator = cooperators.find(
-                  (c) => c.id === assignment.cooperatorId
+                  (c) => c.id === assignment.cooperator_id
                 );
 
                 return (
                   <div
-                    key={assignment.id}
+                    key={assignment.cooperator_id}
                     className="group flex items-center gap-2 rounded-md bg-green-50 p-2"
                   >
                     <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-100">
@@ -82,7 +84,9 @@ const ScheduleAssignmentList: React.FC<ScheduleAssignmentListProps> = ({
                       variant="ghost"
                       size="icon"
                       className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-                      onClick={() => onRemoveAssignment(assignment.id)}
+                      onClick={() =>
+                        onRemoveAssignment(assignment.cooperator_id)
+                      }
                     >
                       <X className="h-3 w-3" />
                     </Button>

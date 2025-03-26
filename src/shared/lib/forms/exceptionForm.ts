@@ -1,4 +1,5 @@
 import { Period } from "@/shared/enums/period";
+import { getWedsnesdayAndSundaysInMonth } from "@/shared/utils/getChurchDays";
 
 export type ExceptionsFormValues = {
   cooperator_id: string;
@@ -8,12 +9,14 @@ export type ExceptionsFormValues = {
 };
 
 class ExceptionForm {
-  public initialValues: ExceptionsFormValues = {
-    cooperator_id: "",
-    date: new Date(),
-    period: Period.enum.day,
-    reason: "",
-  };
+  public initialValues(selectedDate: Date) {
+    return {
+      cooperator_id: "",
+      date: getWedsnesdayAndSundaysInMonth(selectedDate)[0],
+      period: Period.enum.day,
+      reason: "",
+    };
+  }
 }
 
 export const exceptionForm = new ExceptionForm();

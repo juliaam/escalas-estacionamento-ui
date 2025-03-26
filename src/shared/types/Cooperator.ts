@@ -1,1 +1,3 @@
-export type CooperatorId = string;
+export type Cooperator = {
+  id: string;
+};

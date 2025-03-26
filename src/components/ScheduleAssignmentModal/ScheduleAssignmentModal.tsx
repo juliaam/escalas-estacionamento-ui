@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,12 +19,21 @@ import DatePicker from "@/components/DatePicker/DatePicker";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { Textarea } from "../ui";
 import { useController, useForm, useFormContext } from "react-hook-form";
-import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
+import {
+  assignmentForm,
+  AssignmentFormValues,
+} from "@/shared/lib/forms/assignmentForm";
 import { Period } from "@/shared/enums/period";
+import { sectors } from "@/shared/mocks/sectors";
+import {
+  filterWedsnesdayAndSundaysInMonth,
+  getWedsnesdayAndSundaysInMonth,
+} from "@/shared/utils/getChurchDays";
 
 interface ScheduleAssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSave: (data: AssignmentFormValues) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
 }
@@ -33,6 +42,7 @@ export interface AssignmentData {
   cooperatorId: string;
   date: Date;
   id: string;
+  reason: string;
 }
 
 const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
@@ -40,11 +50,20 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
   onClose,
   cooperators,
   selectedCooperatorId,
+  onSave,
 }) => {
-  const { control, handleSubmit, ...methods } = useForm<AssignmentFormValues>();
+  const { getValues, watch } = useFormContext();
+  const { control, handleSubmit, reset, ...methods } =
+    useForm<AssignmentFormValues>({
+      defaultValues: assignmentForm.initialValues(getValues("date")),
+    });
   const {
     field: { onChange: onChangeCooperatorId, value: cooperator_id },
-  } = useController({ name: "cooperator_id", control });
+  } = useController({
+    name: "cooperator_id",
+    control,
+    defaultValue: selectedCooperatorId,
+  });
   const {
     field: { onChange: onChangeDate, value: date },
   } = useController({ name: "date", control });
@@ -52,18 +71,33 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
     field: { value: period, onChange: onChangePeriod },
   } = useController({ name: "period", control });
   const {
+    field: { onChange: onChangeSector, value: sector },
+  } = useController({ name: "sector", control });
+  const {
     field: { onChange: onChangeReason, value: reason },
   } = useController({ name: "reason", control });
 
+  const selectedDateForScale: Date = watch("date");
+
   const handleSave = (data: AssignmentFormValues) => {
+    onSave(data);
+    reset();
     handleClose();
   };
 
   const handleClose = () => {
-    // setCooperatorId(selectedCooperatorId || "");
-    // setAssignmentDate(undefined);
     onClose();
   };
+
+  useEffect(() => {
+    if (selectedCooperatorId) {
+      onChangeCooperatorId(selectedCooperatorId);
+    }
+  }, [selectedCooperatorId]);
+
+  useEffect(() => {
+    onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
+  }, [selectedDateForScale]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -103,6 +137,8 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
             <div className="grid flex-1 gap-2">
               <Label>Data da escolha</Label>
               <DatePicker
+                month={selectedDateForScale}
+                disabled={filterWedsnesdayAndSundaysInMonth()}
                 date={date}
                 onSelect={onChangeDate}
                 placeholder="Selecione a data"
@@ -123,6 +159,22 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="sector">Setor</Label>
+            <Select value={sector} onValueChange={onChangeSector}>
+              <SelectTrigger id="setor">
+                <SelectValue placeholder="Selecione um setor" />
+              </SelectTrigger>
+              <SelectContent>
+                {sectors.map((sec) => (
+                  <SelectItem key={sec.id} value={sec.id}>
+                    {sec.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid gap-2">

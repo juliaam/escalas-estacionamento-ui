@@ -3,25 +3,26 @@ import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar, CalendarProps } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-interface DatePickerProps {
+type DatePickerProps = CalendarProps & {
   date: Date | undefined;
-  onSelect: (date: Date | undefined) => void;
+  onSelect: any;
   placeholder?: string;
   className?: string;
-}
+};
 
 const DatePicker: React.FC<DatePickerProps> = ({
   date,
   onSelect,
   placeholder = "Selecionar data",
   className,
+  ...props
 }) => {
   return (
     <Popover>
@@ -40,11 +41,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
-          mode="single"
-          selected={date}
-          onSelect={onSelect}
+          {...props}
           initialFocus
           className={cn("pointer-events-auto p-3")}
+          selected={date}
+          mode="single"
+          onSelect={onSelect}
         />
       </PopoverContent>
     </Popover>

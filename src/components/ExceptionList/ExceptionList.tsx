@@ -71,17 +71,9 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="truncate font-medium">
-                          {cooperator?.name || "Cooperador"}
-                        </span>
-                        <Badge
-                          variant="outline"
-                          className="border-primary/20 bg-primary/5 text-primary"
-                        >
-                          Data única
-                        </Badge>
-                      </div>
+                      <span className="truncate font-medium">
+                        {cooperator?.name || "Cooperador"}
+                      </span>
                       <div className="text-sm text-muted-foreground">
                         {exception.date && (
                           <span>

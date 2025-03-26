@@ -18,7 +18,7 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({
   monthName,
   className,
 }) => {
-  const { register, control, setValue } = useFormContext();
+  const { register, control, setValue, reset } = useFormContext();
   const {
     field: { value },
   } = useController({ name: monthName, control });
@@ -50,6 +50,7 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({
             <MonthPicker
               value={value}
               onChange={(date: string) => {
+                reset();
                 setValue(monthName, date);
               }}
             />

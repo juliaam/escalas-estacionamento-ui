@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from "@/components/ui";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/utils/twMerge";
 import { forwardRef, LegacyRef, ReactElement } from "react";
 
 export type AppIconButtonProps = Omit<ButtonProps, "size"> & {

@@ -74,7 +74,7 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   };
 
   useEffect(() => {
-    if (selectedCooperatorId) {
+    if (selectedCooperatorId && !cooperatorId) {
       onChangeCooperatorId(selectedCooperatorId);
     }
   }, [selectedCooperatorId]);

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ExceptionModal from "@/components/ExceptionModal/ExceptionModal";
 import ScheduleAssignmentModal from "@/components/ScheduleAssignmentModal/ScheduleAssignmentModal";
 import ScaleLayout from "@/components/ScaleLayout/ScaleLayout";
@@ -13,6 +13,32 @@ import {
 import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
 import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
+import { useScale } from "@/shared/hooks/useScale";
+import { useNavigate } from "react-router-dom";
+import { scaleResult } from "@/shared/mocks/scaleResult";
+
+const generateScaleBody = ({
+  cooperatorsIds,
+  exceptions,
+  assignments,
+  date,
+  name,
+}: ScaleFormValues) => {
+  const cooperators = cooperatorsIds.map((coopId) => ({
+    id_coop: coopId,
+    exceptions: exceptions
+      .filter((exception) => exception.cooperator_id === coopId)
+      .map(({ cooperator_id: _, ...exception }) => exception),
+    assignments: assignments
+      .filter((assignment) => assignment.cooperator_id === coopId)
+      .map(({ cooperator_id: _, ...assignment }) => assignment),
+  }));
+  return {
+    name,
+    date: date.toISOString(),
+    cooperators,
+  };
+};
 
 const Home = () => {
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
@@ -21,14 +47,15 @@ const Home = () => {
     useState("");
   const [selectedCooperatorForAssignment, setSelectedCooperatorForAssignment] =
     useState("");
-
   const methods = useForm<ScaleFormValues>({
     defaultValues: scaleForm.initialValues,
   });
   const { handleSubmit, setValue, getValues, watch } = methods;
+  const { setScaleData } = useScale();
   const cooperatorsIds: string[] = watch("cooperatorsIds");
   const exceptions: Exception[] = watch("exceptions");
   const assignments: AssignmentsCooperators[] = watch("assignments");
+  const navigate = useNavigate();
 
   const cooperatorsWithFlags = mockCooperators.map((cooperator) => ({
     ...cooperator,
@@ -126,8 +153,16 @@ const Home = () => {
     [cooperatorsIds]
   );
 
-  const onSubmit = (data: ScaleFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: ScaleFormValues) => {
+    try {
+      const scaleBody = data;
+      // const resultado = await ScaleService.generate(scaleBody);
+      setScaleData(scaleResult);
+      navigate("/resultado");
+    } catch {
+      // error handler later
+      toast("Houve um erro ao gerar escala!");
+    }
   };
 
   return (

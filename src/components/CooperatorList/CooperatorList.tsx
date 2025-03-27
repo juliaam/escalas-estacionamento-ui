@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import CooperatorCard, { Cooperator } from "../CooperatorCard/CooperatorCard";
 import { Search, Users, UserCheck } from "lucide-react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/utils/twMerge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFormContext } from "react-hook-form";
 

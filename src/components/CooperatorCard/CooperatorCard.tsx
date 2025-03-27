@@ -2,7 +2,7 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/utils/twMerge";
 import { X, Clock, Calendar } from "lucide-react";
 import {
   Tooltip,

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/utils/twMerge";
 import { Exception } from "@/shared/types/Exception";
 import { useFormContext } from "react-hook-form";
 import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";

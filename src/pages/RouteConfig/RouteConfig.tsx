@@ -4,6 +4,7 @@ import Home from "@/pages/Home";
 import { MainLayoutWrapper } from "@/layouts/MainLayout";
 import { ManageCooperators } from "@/components/ManageCooperators";
 import NotFound from "../NotFound";
+import { Result } from "../Result";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/gerenciador-cooperadores",
         element: <ManageCooperators />,
+      },
+      {
+        path: "/resultado",
+        element: <Result />,
       },
     ],
   },

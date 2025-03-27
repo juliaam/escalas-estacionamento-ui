@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/utils/twMerge";
 import { useFormContext } from "react-hook-form";
 import {
   AssignmentsCooperators,

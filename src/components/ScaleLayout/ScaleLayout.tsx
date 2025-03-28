@@ -7,13 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Users2 } from "lucide-react";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { Exception } from "@/shared/types/Exception";
-import { Assignments } from "@/shared/types/Assignaments";
 import { AssignmentsCooperators } from "@/shared/lib/forms/scaleForm";
 
 interface ScaleLayoutProps {
   // Scale details
   scaleName: string;
-  monthName: string;
 
   // Cooperators
   cooperatorsWithFlags: typeof mockCooperators;
@@ -33,7 +31,6 @@ interface ScaleLayoutProps {
 
 const ScaleLayout: React.FC<ScaleLayoutProps> = ({
   scaleName,
-  monthName,
   cooperatorsWithFlags,
   onAddExceptionForCooperator,
   onAddAssignmentForCooperator,
@@ -47,11 +44,7 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto flex h-full flex-col px-4 py-4">
-        <ScaleHeader
-          scaleName={scaleName}
-          monthName={monthName}
-          className="mb-3"
-        />
+        <ScaleHeader scaleName={scaleName} className="mb-3" />
 
         <div className="grid flex-1 grid-cols-1 gap-3 overflow-hidden lg:grid-cols-3">
           <div className="overflow-hidden lg:col-span-2">

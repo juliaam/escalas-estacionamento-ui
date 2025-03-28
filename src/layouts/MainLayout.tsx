@@ -9,10 +9,10 @@ import { Toaster } from "sonner";
 export function MainLayoutWrapper(): ReactElement {
   return (
     <SidebarProvider defaultOpen={false}>
-      <div className="h-screen w-screen overflow-x-hidden bg-zinc-100">
+      <div className="flex h-screen w-screen flex-col bg-zinc-100">
         <Toaster />
         <Header />
-        <main className="px-5">
+        <main className="flex-grow px-5">
           <Outlet />
         </main>
       </div>

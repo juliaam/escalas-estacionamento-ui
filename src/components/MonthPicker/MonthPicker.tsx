@@ -22,13 +22,18 @@ const months = [
   "Dez",
 ];
 
-const MonthPicker = ({ value, onChange }) => {
+export type MonthPickerProps = {
+  value: Date;
+  onChange: (date: string) => void;
+};
+
+const MonthPicker = ({ value, onChange }: MonthPickerProps) => {
   const [open, setOpen] = useState(false);
   const date = value ? new Date(value + "-01") : new Date();
   const [year, setYear] = useState(date.getFullYear());
   const [month, setMonth] = useState(date.getMonth());
 
-  const handleSelect = (m) => {
+  const handleSelect = (m: number) => {
     setMonth(m);
     setOpen(false);
     onChange?.(`${year}-${String(m + 1).padStart(2, "0")}`);

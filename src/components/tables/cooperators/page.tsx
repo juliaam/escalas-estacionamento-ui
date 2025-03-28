@@ -6,32 +6,18 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { rankItem } from "@tanstack/match-sorter-utils";
 import { memo } from "react";
 import { coopsList } from "@/shared/mocks/coopsList";
+import { fuzzyFilter } from "../shared/fuzzyfilter";
 
 type CooperatorsTableProps = {
-  onClickAddCooperator: () => any;
+  onClickAddCooperator: () => void;
 };
 
 function getData(): Cooperator[] {
   return coopsList;
-}
-
-function fuzzyFilter(
-  row: Row<Cooperator>,
-  columnId: string,
-  filterValue: string
-) {
-  const value = row.getValue(columnId);
-  if (typeof value !== "string") {
-    return false;
-  }
-
-  return rankItem(value, filterValue).passed;
 }
 
 export const CooperatorsTable = memo(

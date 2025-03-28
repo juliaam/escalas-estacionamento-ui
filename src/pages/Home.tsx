@@ -15,7 +15,7 @@ import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 import { useScale } from "@/shared/hooks/useScale";
 import { useNavigate } from "react-router-dom";
-import { scaleResult } from "@/shared/mocks/scaleResult";
+import { scaleGroup } from "@/shared/mocks/scaleResult";
 
 const generateScaleBody = ({
   cooperatorsIds,
@@ -157,7 +157,7 @@ const Home = () => {
     try {
       const scaleBody = data;
       // const resultado = await ScaleService.generate(scaleBody);
-      setScaleData(scaleResult);
+      setScaleData(scaleGroup);
       navigate("/resultado");
     } catch {
       // error handler later
@@ -171,7 +171,6 @@ const Home = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <ScaleLayout
             scaleName="name"
-            monthName="date"
             cooperatorsWithFlags={cooperatorsWithFlags}
             onAddExceptionForCooperator={handleAddExceptionForCooperator}
             onAddAssignmentForCooperator={handleAddAssignmentForCooperator}

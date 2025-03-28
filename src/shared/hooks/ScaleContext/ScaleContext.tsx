@@ -1,4 +1,4 @@
-import { scaleResult } from "@/shared/mocks/scaleResult";
+import { scaleGroup } from "@/shared/mocks/scaleResult";
 import { ScaleResult } from "@/shared/types/ScaleResult";
 import { createContext } from "react";
 
@@ -7,7 +7,7 @@ type ScaleContextType = {
   setScaleData: any;
 };
 
-console.log("scaleResult", scaleResult);
+console.log("scaleResult", scaleGroup);
 
 export const ScaleContext = createContext<ScaleContextType>({
   scaleData: [],

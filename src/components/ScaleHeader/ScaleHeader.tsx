@@ -6,22 +6,19 @@ import { cn } from "@/shared/utils/twMerge";
 import MonthPicker from "@/components/MonthPicker/MonthPicker";
 import { Label } from "@/components/ui/label";
 import { useController, useFormContext } from "react-hook-form";
+import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 
 interface ScaleHeaderProps {
   scaleName: string;
-  monthName: string;
   className?: string;
 }
 
-const ScaleHeader: React.FC<ScaleHeaderProps> = ({
-  scaleName,
-  monthName,
-  className,
-}) => {
-  const { register, control, setValue, reset } = useFormContext();
+const ScaleHeader: React.FC<ScaleHeaderProps> = ({ className }) => {
+  const { register, control, setValue, reset } =
+    useFormContext<ScaleFormValues>();
   const {
     field: { value },
-  } = useController({ name: monthName, control });
+  } = useController({ name: "date", control });
 
   return (
     <div className={cn("space-y-6", className)}>
@@ -34,11 +31,11 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <label htmlFor={scaleName} className="text-sm font-medium">
+          <label htmlFor="name" className="text-sm font-medium">
             Nome da Escala
           </label>
           <Input
-            {...register(scaleName)}
+            {...register("name")}
             placeholder="Ex: Escala de Julho/2023"
             className="max-w-md"
           />
@@ -51,7 +48,13 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({
               value={value}
               onChange={(date: string) => {
                 reset();
-                setValue(monthName, date);
+                setValue(
+                  "date",
+                  new Date(
+                    Number(date.split("-")[0]),
+                    Number(date.split("-")[1])
+                  )
+                );
               }}
             />
           </div>

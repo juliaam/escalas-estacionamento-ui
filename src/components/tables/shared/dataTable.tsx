@@ -18,7 +18,10 @@ import {
   ChevronsRight,
 } from "lucide-react";
 
-export function DataTable<TData>({ table }: DataTableProps<TData>) {
+export function DataTable<TData>({
+  table,
+  hasPagination = true,
+}: DataTableProps<TData>) {
   const actualPage = table.getState().pagination.pageIndex + 1;
   return (
     <div>
@@ -72,35 +75,45 @@ export function DataTable<TData>({ table }: DataTableProps<TData>) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div>
-          <span>
-            Página {actualPage} de {table.getRowCount() / 10}
-          </span>
+      {hasPagination && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div>
+            <span>
+              Página {actualPage} de {table.getRowCount() / 10}
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => table.firstPage()}
+          >
+            <ChevronsLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => table.lastPage()}
+          >
+            <ChevronsRight />
+          </Button>
         </div>
-        <Button variant="outline" size="icon" onClick={() => table.firstPage()}>
-          <ChevronsLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight />
-        </Button>
-        <Button variant="outline" size="icon" onClick={() => table.lastPage()}>
-          <ChevronsRight />
-        </Button>
-      </div>
+      )}
     </div>
   );
 }

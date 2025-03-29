@@ -6,7 +6,7 @@ export type AssignmentFormValues = {
   date: Date;
   period: keyof typeof Period.enum;
   sector: string;
-  reason: string;
+  reason?: string;
 };
 
 class AssignmentForm {

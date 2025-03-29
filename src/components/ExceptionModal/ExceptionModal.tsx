@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DatePicker from "@/components/DatePicker/DatePicker";
-import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { Textarea } from "../ui";
 import { Period } from "@/shared/enums/period";
 import { useController, useForm, useFormContext } from "react-hook-form";
@@ -28,6 +27,7 @@ import {
   filterWedsnesdayAndSundaysInMonth,
   getWedsnesdayAndSundaysInMonth,
 } from "@/shared/utils/getChurchDays";
+import { Cooperator } from "@/shared/types/Cooperator";
 
 interface ExceptionModalProps {
   isOpen: boolean;
@@ -43,7 +43,6 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   onClose,
   onSave,
   cooperators,
-  setCooperatorId,
   selectedCooperatorId,
 }) => {
   const { getValues, watch } = useFormContext();

@@ -2,6 +2,7 @@ import { Period } from "@/shared/enums/period";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { Cooperator } from "@/shared/types/Cooperator";
 import { Exception } from "@/shared/types/Exception";
+import { AssignmentFormValues } from "./assignmentForm";
 
 export type CooperatorBodyForm = {
   id: string;
@@ -24,7 +25,7 @@ export type ScaleFormValues = {
   name: string;
   date: Date;
   cooperatorsIds: Cooperator["id"][];
-  assignments: AssignmentsCooperators[];
+  assignments: AssignmentFormValues[];
   exceptions: Exception[];
 };
 

@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DatePicker from "@/components/DatePicker/DatePicker";
-import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { Textarea } from "../ui";
 import { useController, useForm, useFormContext } from "react-hook-form";
 import {
@@ -29,6 +28,7 @@ import {
   filterWedsnesdayAndSundaysInMonth,
   getWedsnesdayAndSundaysInMonth,
 } from "@/shared/utils/getChurchDays";
+import { Cooperator } from "@/shared/types/Cooperator";
 
 interface ScheduleAssignmentModalProps {
   isOpen: boolean;

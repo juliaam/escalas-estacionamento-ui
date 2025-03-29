@@ -1,5 +1,5 @@
 import { AppInputSearch, Button } from "@/components/ui";
-import { coopsList } from "@/shared/mocks/cooperatorsList";
+import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { ThumbsDown, ThumbsUp, Users2, X } from "lucide-react";
 
 export const CooperatorsChoose = () => {
@@ -26,7 +26,7 @@ export const CooperatorsChoose = () => {
             <ThumbsUp size={22} />
           </div>
           <div className="flex flex-col gap-1">
-            {coopsList.map((coop) => {
+            {mockCooperators.map((coop) => {
               return (
                 <div className="flex items-center justify-between rounded-md border-b bg-zinc-50 px-4 py-2">
                   <span>{coop.name}</span>

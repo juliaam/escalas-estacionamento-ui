@@ -1,5 +1,5 @@
 import { AppInputSearch } from "@/components/ui";
-import { ThumbsUp, ThumbsUpIcon } from "lucide-react";
+import { ThumbsUp } from "lucide-react";
 import { ReactNode, useMemo, useState } from "react";
 
 interface ListCooperatorsProps {
@@ -10,11 +10,7 @@ interface ListCooperatorsProps {
 
 const formatString = (string: string) => string.trim().toLowerCase();
 
-export function ListCooperators({
-  cooperators,
-  title,
-  cooperatorContent,
-}: ListCooperatorsProps) {
+export function ListCooperators({ cooperators, title }: ListCooperatorsProps) {
   const [inputValue, setInputValue] = useState("");
 
   const filteredResults = useMemo(() => {

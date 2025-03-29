@@ -1,4 +1,13 @@
 import { cn } from "@/shared/utils/twMerge";
+import { ChangeEvent, ReactElement } from "react";
+
+export type InputIcon = {
+  placeholder: string;
+  icon: ReactElement;
+  className?: string;
+  value: string | number;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+};
 
 export const InputIcon = ({
   onChange,
@@ -6,7 +15,7 @@ export const InputIcon = ({
   placeholder,
   icon,
   className,
-}) => {
+}: InputIcon) => {
   return (
     <div
       className={cn(

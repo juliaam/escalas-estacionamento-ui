@@ -1,25 +1,17 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Calendar, Plus, X } from "lucide-react";
 import { format } from "date-fns";
-import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
 import { cn } from "@/shared/utils/twMerge";
 import { useFormContext } from "react-hook-form";
-import {
-  AssignmentsCooperators,
-  ScaleFormValues,
-} from "@/shared/lib/forms/scaleForm";
+import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
+import { Cooperator } from "@/shared/types/Cooperator";
+import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 
 interface ScheduleAssignmentListProps {
-  assignments: AssignmentsCooperators[];
+  assignments: AssignmentFormValues[];
   cooperators: Cooperator[];
   onAddAssignment: () => void;
   onRemoveAssignment: (id: string) => void;

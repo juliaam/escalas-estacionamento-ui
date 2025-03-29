@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Users2 } from "lucide-react";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { Exception } from "@/shared/types/Exception";
-import { AssignmentsCooperators } from "@/shared/lib/forms/scaleForm";
+import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 
 interface ScaleLayoutProps {
   // Scale details
@@ -24,7 +24,7 @@ interface ScaleLayoutProps {
   onRemoveException: (id: string) => void;
 
   // Assignments
-  assignments: AssignmentsCooperators[];
+  assignments: AssignmentFormValues[];
   onAddAssignment: () => void;
   onRemoveAssignment: (id: string) => void;
 }

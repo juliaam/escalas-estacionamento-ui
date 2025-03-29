@@ -5,11 +5,7 @@ import ScaleLayout from "@/components/ScaleLayout/ScaleLayout";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { mockCooperators } from "@/shared/mocks/mockCooperators";
-import {
-  AssignmentsCooperators,
-  scaleForm,
-  ScaleFormValues,
-} from "@/shared/lib/forms/scaleForm";
+import { scaleForm, ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
 import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
@@ -18,8 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { scaleGroup } from "@/shared/mocks/scaleResult";
 import { CooperatorService } from "@/services/CooperatorService";
 import { Cooperator } from "@/shared/types/Cooperator";
-import { ScaleService } from "@/services/ScaleService";
-import { formatScale } from "@/shared/utils/formatScale";
 
 const Home = () => {
   const [cooperators, setCooperators] = useState<Cooperator[]>([]);
@@ -36,7 +30,7 @@ const Home = () => {
   const { setScaleData } = useScale();
   const cooperatorsIds: string[] = watch("cooperatorsIds");
   const exceptions: Exception[] = watch("exceptions");
-  const assignments: AssignmentsCooperators[] = watch("assignments");
+  const assignments: AssignmentFormValues[] = watch("assignments");
   const navigate = useNavigate();
 
   const cooperatorsWithFlags = mockCooperators.map((cooperator) => ({
@@ -63,6 +57,9 @@ const Home = () => {
     setSelectedCooperatorForException("");
     setIsExceptionModalOpen(true);
   };
+
+  console.log(assignments, "assign");
+  console.log(exceptions, "tesste");
 
   const onSaveException = (exception: ExceptionsFormValues) => {
     const exceptions = getValues("exceptions");
@@ -107,6 +104,8 @@ const Home = () => {
       newValue = [...assignments, assignment];
     }
 
+    console.log(newValue, "value");
+
     setValue("assignments", newValue);
     setSelectedCooperatorForException("");
     setIsExceptionModalOpen(false);
@@ -138,6 +137,7 @@ const Home = () => {
   const onSubmit = async (data: ScaleFormValues) => {
     try {
       // const resultado = await ScaleService.generate(formatScale(data));
+      console.log(data, "data");
       toast("Escala gerada com sucesso!");
       setScaleData(scaleGroup);
       navigate("/resultado");

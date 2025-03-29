@@ -1,76 +1,64 @@
-import { Cooperator } from "@/components/CooperatorCard/CooperatorCard";
+import { Cooperator } from "../types/Cooperator";
 
 export const mockCooperators: Cooperator[] = [
   {
     id: "1",
     name: "Ana Silva",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=1",
+    type: "Cooperador",
   },
   {
     id: "2",
     name: "Bruno Costa",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=2",
+    type: "Cooperador",
   },
   {
     id: "3",
     name: "Carla Pereira",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=3",
+    type: "Cooperador",
   },
   {
     id: "4",
     name: "Daniel Oliveira",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=4",
+    type: "Cooperador",
   },
   {
     id: "5",
     name: "Eduardo Santos",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=5",
+    type: "Cooperador",
   },
   {
     id: "6",
     name: "Fernanda Lima",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=6",
+    type: "Cooperador",
   },
   {
     id: "7",
     name: "Gabriel Martins",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=7",
+    type: "Cooperador",
   },
   {
     id: "8",
     name: "Helena Castro",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=8",
+    type: "Cooperador",
   },
   {
     id: "9",
     name: "Igor Alves",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=9",
+    type: "Cooperador",
   },
   {
     id: "10",
     name: "Juliana Fernandes",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=10",
+    type: "Cooperador",
   },
   {
     id: "11",
     name: "Lucas Ribeiro",
-    role: "Cooperador",
-    avatarUrl: "https://i.pravatar.cc/150?img=11",
+    type: "Cooperador",
   },
   {
     id: "12",
     name: "Mariana Rocha",
-    role: "Diácuno",
-    avatarUrl: "https://i.pravatar.cc/150?img=12",
+    type: "Diácuno",
   },
 ];

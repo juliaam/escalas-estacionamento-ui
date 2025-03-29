@@ -16,31 +16,13 @@ import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 import { useScale } from "@/shared/hooks/useScale";
 import { useNavigate } from "react-router-dom";
 import { scaleGroup } from "@/shared/mocks/scaleResult";
-
-const generateScaleBody = ({
-  cooperatorsIds,
-  exceptions,
-  assignments,
-  date,
-  name,
-}: ScaleFormValues) => {
-  const cooperators = cooperatorsIds.map((coopId) => ({
-    id_coop: coopId,
-    exceptions: exceptions
-      .filter((exception) => exception.cooperator_id === coopId)
-      .map(({ cooperator_id: _, ...exception }) => exception),
-    assignments: assignments
-      .filter((assignment) => assignment.cooperator_id === coopId)
-      .map(({ cooperator_id: _, ...assignment }) => assignment),
-  }));
-  return {
-    name,
-    date: date.toISOString(),
-    cooperators,
-  };
-};
+import { CooperatorService } from "@/services/CooperatorService";
+import { Cooperator } from "@/shared/types/Cooperator";
+import { ScaleService } from "@/services/ScaleService";
+import { formatScale } from "@/shared/utils/formatScale";
 
 const Home = () => {
+  const [cooperators, setCooperators] = useState<Cooperator[]>([]);
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [selectedCooperatorForException, setSelectedCooperatorForException] =
@@ -155,8 +137,8 @@ const Home = () => {
 
   const onSubmit = async (data: ScaleFormValues) => {
     try {
-      const scaleBody = data;
-      // const resultado = await ScaleService.generate(scaleBody);
+      // const resultado = await ScaleService.generate(formatScale(data));
+      toast("Escala gerada com sucesso!");
       setScaleData(scaleGroup);
       navigate("/resultado");
     } catch {
@@ -164,6 +146,16 @@ const Home = () => {
       toast("Houve um erro ao gerar escala!");
     }
   };
+
+  useEffect(() => {
+    const getCooperators = async () => {
+      const cooperators = await CooperatorService.list();
+      setCooperators(cooperators);
+    };
+    getCooperators();
+  }, []);
+
+  console.log(cooperators, "cooperators");
 
   return (
     <>

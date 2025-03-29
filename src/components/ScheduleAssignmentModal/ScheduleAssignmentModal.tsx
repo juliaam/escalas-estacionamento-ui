@@ -95,6 +95,8 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
     }
   }, [selectedCooperatorId]);
 
+  console.log(selectedCooperatorId, "selected");
+
   useEffect(() => {
     onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
   }, [selectedDateForScale]);

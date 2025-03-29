@@ -6,13 +6,13 @@ export type SectorGenerateBody = {
 };
 
 export type AssignmentGenerateBody = {
-  date: Date;
+  date: string;
   period: string;
   sector: SectorGenerateBody[];
 };
 
 export type ExceptionGenerateBody = {
-  date: Date;
+  date: string;
   period: string;
   reason?: string;
 };

@@ -37,6 +37,7 @@ export const CooperatorsTable = memo(
         <div className="flex items-end justify-between">
           <div className="w-1/4">
             <AppInputSearch
+              placeholder="Pesquise cooperadores..."
               className="w-full"
               onChangeValue={table.setGlobalFilter}
             />

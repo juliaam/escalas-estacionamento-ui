@@ -74,7 +74,7 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   };
 
   useEffect(() => {
-    if (selectedCooperatorId && !cooperatorId) {
+    if (selectedCooperatorId) {
       onChangeCooperatorId(selectedCooperatorId);
     }
   }, [selectedCooperatorId]);
@@ -96,9 +96,9 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
           <div className="grid gap-2">
             <Label htmlFor="cooperator">Cooperador</Label>
             <Select
+              disabled={!!selectedCooperatorId}
               value={cooperatorId}
-              onValueChange={setCooperatorId}
-              disabled={!!cooperatorId}
+              onValueChange={onChangeCooperatorId}
             >
               <SelectTrigger id="cooperator">
                 <SelectValue placeholder="Selecione um cooperador" />

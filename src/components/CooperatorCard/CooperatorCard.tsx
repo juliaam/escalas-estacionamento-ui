@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/shared/utils/twMerge";
 import { X, Clock, Calendar } from "lucide-react";
 import {
@@ -9,18 +9,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
-
-export interface Cooperator {
-  id: string;
-  name: string;
-  role: string;
-  avatarUrl?: string;
-  hasExceptions?: boolean;
-  hasAssignments?: boolean;
-}
+import { Cooperator } from "@/shared/types/Cooperator";
 
 type CooperatorCardProps = {
-  cooperator: Cooperator;
+  cooperator: Cooperator & {
+    hasAssignments?: boolean;
+    hasExceptions?: boolean;
+  };
   isSelected: boolean;
   onToggle: (id: string) => void;
   onAddException: (id: string) => void;
@@ -73,7 +68,6 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
       </div>
 
       <Avatar className="mr-4 h-12 w-12">
-        <AvatarImage src={cooperator.avatarUrl} alt={cooperator.name} />
         <AvatarFallback className="bg-primary/10 font-medium text-primary">
           {cooperator.name
             .split(" ")
@@ -87,7 +81,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
       <div className="min-w-0 flex-1">
         <h3 className="truncate text-sm font-medium">{cooperator.name}</h3>
         <p className="truncate text-xs text-muted-foreground">
-          {cooperator.role}
+          {cooperator.type}
         </p>
       </div>
 
@@ -132,6 +126,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <button
+              type="button"
               disabled={!isSelected}
               data-disabled={!isSelected}
               onClick={() => onAddAssignment(cooperator.id)}

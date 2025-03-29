@@ -10,7 +10,7 @@ export const ManageCooperators = () => {
   }, []);
 
   return (
-    <div className="my-10 flex flex-col gap-y-4">
+    <div className="container mx-auto flex flex-col gap-y-4 p-4">
       <span className="text-4xl">Gerenciar Cooperadores</span>
       <CooperatorsTable onClickAddCooperator={onClickAddCooperator} />
       <ModalAddCooperators open={open} onOpenChange={setOpen} />

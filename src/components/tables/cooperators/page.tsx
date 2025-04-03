@@ -9,28 +9,28 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { memo } from "react";
-import { coopsList } from "@/shared/mocks/coopsList";
 import { fuzzyFilter } from "../shared/fuzzyfilter";
+import { useCooperators } from "@/shared/hooks/useCooperators";
 
 type CooperatorsTableProps = {
   onClickAddCooperator: () => void;
 };
 
-function getData(): Cooperator[] {
-  return coopsList;
-}
-
 export const CooperatorsTable = memo(
   ({ onClickAddCooperator }: CooperatorsTableProps) => {
-    const table = useReactTable({
+    const { data, loading } = useCooperators();
+
+    const table = useReactTable<Cooperator>({
       columns: cooperatorsColumns,
       enableGlobalFilter: true,
-      data: getData(),
+      data,
       globalFilterFn: fuzzyFilter,
       getCoreRowModel: getCoreRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
     });
+
+    if (loading) return <p>Carregando...</p>;
 
     return (
       <div className="flex flex-col gap-y-1">

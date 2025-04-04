@@ -86,6 +86,7 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
   };
 
   const handleClose = () => {
+    reset();
     onClose();
   };
 
@@ -94,8 +95,6 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
       onChangeCooperatorId(selectedCooperatorId);
     }
   }, [selectedCooperatorId]);
-
-  console.log(selectedCooperatorId, "selected");
 
   useEffect(() => {
     onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
@@ -116,7 +115,9 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
           </DialogHeader>
 
           <div className="grid gap-2">
-            <Label htmlFor="cooperator">Cooperador</Label>
+            <Label htmlFor="cooperator">
+              Cooperador <span className="text-red-600">*</span>
+            </Label>
             <Select
               value={cooperator_id}
               onValueChange={onChangeCooperatorId}
@@ -137,8 +138,11 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
 
           <div className="flex w-full gap-x-2">
             <div className="grid flex-1 gap-2">
-              <Label>Data da escolha</Label>
+              <Label htmlFor="date">
+                Data da escolha <span className="text-red-600">*</span>
+              </Label>
               <DatePicker
+                id="date"
                 month={selectedDateForScale}
                 disabled={filterWedsnesdayAndSundaysInMonth()}
                 date={date}
@@ -147,7 +151,9 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
               />
             </div>
             <div className="grid w-full flex-1 gap-2">
-              <Label>Período</Label>
+              <Label htmlFor="cooperator">
+                Período <span className="text-red-600">*</span>
+              </Label>
               <Select value={period} onValueChange={onChangePeriod}>
                 <SelectTrigger id="cooperator">
                   <SelectValue placeholder="Selecione um cooperador" />
@@ -164,9 +170,11 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="sector">Setor</Label>
+            <Label htmlFor="sector">
+              Setor <span className="text-red-600">*</span>
+            </Label>
             <Select value={sector} onValueChange={onChangeSector}>
-              <SelectTrigger id="setor">
+              <SelectTrigger id="sector">
                 <SelectValue placeholder="Selecione um setor" />
               </SelectTrigger>
               <SelectContent>
@@ -180,7 +188,7 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
           </div>
 
           <div className="grid gap-2">
-            <Label>Motivo (opcional)</Label>
+            <Label>Motivo</Label>
             <Textarea value={reason} onChange={onChangeReason} />
           </div>
 

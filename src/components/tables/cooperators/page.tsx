@@ -8,46 +8,48 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { memo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { fuzzyFilter } from "../shared/fuzzyfilter";
 import { useCooperators } from "@/shared/hooks/useCooperators";
 
 type CooperatorsTableProps = {
   onClickAddCooperator: () => void;
+  data: Cooperator[];
+  isLoading: boolean;
 };
 
-export const CooperatorsTable = memo(
-  ({ onClickAddCooperator }: CooperatorsTableProps) => {
-    const { data, loading } = useCooperators();
+export const CooperatorsTable = ({
+  onClickAddCooperator,
+  data,
+  isLoading,
+}: CooperatorsTableProps) => {
+  const table = useReactTable<Cooperator>({
+    columns: cooperatorsColumns,
+    enableGlobalFilter: true,
+    data: data,
+    globalFilterFn: fuzzyFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
-    const table = useReactTable<Cooperator>({
-      columns: cooperatorsColumns,
-      enableGlobalFilter: true,
-      data,
-      globalFilterFn: fuzzyFilter,
-      getCoreRowModel: getCoreRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-    });
+  if (isLoading) return <p>Carregando...</p>;
 
-    if (loading) return <p>Carregando...</p>;
-
-    return (
-      <div className="flex flex-col gap-y-1">
-        <div className="flex items-end justify-between">
-          <div className="w-1/4">
-            <AppInputSearch
-              placeholder="Pesquise cooperadores..."
-              className="w-full"
-              onChangeValue={table.setGlobalFilter}
-            />
-          </div>
-          <Button onClick={onClickAddCooperator}>
-            Adicionar cooperador <Plus />
-          </Button>
+  return (
+    <div className="flex flex-col gap-y-1">
+      <div className="flex items-end justify-between">
+        <div className="w-1/4">
+          <AppInputSearch
+            placeholder="Pesquise cooperadores..."
+            className="w-full"
+            onChangeValue={table.setGlobalFilter}
+          />
         </div>
-        <DataTable table={table} />
+        <Button onClick={onClickAddCooperator}>
+          Adicionar cooperador <Plus />
+        </Button>
       </div>
-    );
-  }
-);
+      <DataTable table={table} />
+    </div>
+  );
+};

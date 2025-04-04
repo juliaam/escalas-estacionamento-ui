@@ -1,5 +1,4 @@
 import { Period } from "@/shared/enums/period";
-import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { Cooperator } from "@/shared/types/Cooperator";
 import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "./assignmentForm";
@@ -33,7 +32,7 @@ class ScaleForm {
   public initialValues: ScaleFormValues = {
     name: "",
     date: new Date(),
-    cooperatorsIds: mockCooperators.map((coop) => coop.id),
+    cooperatorsIds: [],
     exceptions: [],
     assignments: [],
   };

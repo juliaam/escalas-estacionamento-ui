@@ -7,8 +7,6 @@ type ScaleContextType = {
   setScaleData: any;
 };
 
-console.log("scaleResult", scaleGroup);
-
 export const ScaleContext = createContext<ScaleContextType>({
   scaleData: [],
   setScaleData: undefined,

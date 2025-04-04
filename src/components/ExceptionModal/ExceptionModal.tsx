@@ -72,6 +72,12 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
     reset();
   };
 
+  const onCloseModal = () => {
+    console.log("fechando modal");
+    reset();
+    onClose();
+  };
+
   useEffect(() => {
     if (selectedCooperatorId) {
       onChangeCooperatorId(selectedCooperatorId);
@@ -83,7 +89,7 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   }, [selectedDateForScale]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onCloseModal}>
       <DialogContent className="animate-slide-up sm:max-w-[425px]">
         <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
@@ -93,7 +99,9 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
           </DialogHeader>
 
           <div className="grid gap-2">
-            <Label htmlFor="cooperator">Cooperador</Label>
+            <Label htmlFor="cooperator">
+              Cooperador <span className="text-red-600">*</span>
+            </Label>
             <Select
               disabled={!!selectedCooperatorId}
               value={cooperatorId}
@@ -114,8 +122,11 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
 
           <div className="flex w-full gap-x-2">
             <div className="grid flex-1 gap-2">
-              <Label>Data da Exceção</Label>
+              <Label htmlFor="date">
+                Data da Exceção <span className="text-red-600">*</span>
+              </Label>
               <DatePicker
+                id="date"
                 month={selectedDateForScale}
                 disabled={filterWedsnesdayAndSundaysInMonth()}
                 date={date}
@@ -124,7 +135,9 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
               />
             </div>
             <div className="grid w-full flex-1 gap-2">
-              <Label>Período</Label>
+              <Label htmlFor="cooperator">
+                Período <span className="text-red-600">*</span>
+              </Label>
               <Select value={period} onValueChange={onChangePeriod}>
                 <SelectTrigger id="cooperator">
                   <SelectValue placeholder="Selecione um cooperador" />
@@ -146,7 +159,7 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={onClose}>
+            <Button variant="outline" onClick={onCloseModal}>
               Cancelar
             </Button>
             <Button type="submit">Salvar Exceção</Button>

@@ -79,7 +79,7 @@ export function DataTable<TData>({
         <div className="flex items-center justify-end space-x-2 py-4">
           <div>
             <span>
-              Página {actualPage} de {table.getRowCount() / 10}
+              Página {actualPage} de {table.getPageCount()}
             </span>
           </div>
           <Button

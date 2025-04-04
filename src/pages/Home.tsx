@@ -4,25 +4,22 @@ import ScheduleAssignmentModal from "@/components/ScheduleAssignmentModal/Schedu
 import ScaleLayout from "@/components/ScaleLayout/ScaleLayout";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { scaleForm, ScaleFormValues } from "@/shared/lib/forms/scaleForm";
-import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
 import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 import { useScale } from "@/shared/hooks/useScale";
 import { useNavigate } from "react-router-dom";
 import { scaleGroup } from "@/shared/mocks/scaleResult";
-import { CooperatorService } from "@/services/CooperatorService";
-import { Cooperator } from "@/shared/types/Cooperator";
+import { useCooperators } from "@/shared/hooks/useCooperators";
 
 const Home = () => {
-  const [cooperators, setCooperators] = useState<Cooperator[]>([]);
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [selectedCooperatorForException, setSelectedCooperatorForException] =
     useState("");
   const [selectedCooperatorForAssignment, setSelectedCooperatorForAssignment] =
     useState("");
+
   const methods = useForm<ScaleFormValues>({
     defaultValues: scaleForm.initialValues,
   });
@@ -33,15 +30,21 @@ const Home = () => {
   const assignments: AssignmentFormValues[] = watch("assignments");
   const navigate = useNavigate();
 
-  const cooperatorsWithFlags = mockCooperators.map((cooperator) => ({
-    ...cooperator,
-    hasExceptions: exceptions.some(
-      (exception) => exception.cooperator_id === cooperator.id
-    ),
-    hasAssignments: assignments.some(
-      (assignment) => assignment.cooperator_id === cooperator.id
-    ),
-  }));
+  const { data: cooperators } = useCooperators();
+
+  const cooperatorsWithFlags = useMemo(
+    () =>
+      cooperators?.map((cooperator) => ({
+        ...cooperator,
+        hasExceptions: exceptions.some(
+          (exception) => exception.cooperator_id === cooperator.id
+        ),
+        hasAssignments: assignments.some(
+          (assignment) => assignment.cooperator_id === cooperator.id
+        ),
+      })) || [],
+    [cooperators, exceptions, assignments]
+  );
 
   const handleAddExceptionForCooperator = (coopId: string) => {
     setSelectedCooperatorForException(coopId);
@@ -53,125 +56,51 @@ const Home = () => {
     setIsAssignmentModalOpen(true);
   };
 
-  const handleAddException = () => {
-    setSelectedCooperatorForException("");
-    setIsExceptionModalOpen(true);
-  };
-
-  console.log(assignments, "assign");
-  console.log(exceptions, "tesste");
-
-  const onSaveException = (exception: ExceptionsFormValues) => {
-    const exceptions = getValues("exceptions");
-    let newValue;
-
-    const alreadyExists = exceptions.some(
-      (except) => except.cooperator_id === exception.cooperator_id
-    );
-
-    if (alreadyExists) {
-      newValue = exceptions.map((except) => {
-        if (except.cooperator_id === exception.cooperator_id) {
-          return exception;
-        }
-        return except;
-      });
-    } else {
-      newValue = [...exceptions, exception];
-    }
-
-    setValue("exceptions", newValue);
-    setSelectedCooperatorForException("");
-    setIsExceptionModalOpen(false);
-  };
-
-  const onSaveAssignment = (assignment: AssignmentFormValues) => {
-    const assignments = getValues("assignments");
-    let newValue;
-
-    const alreadyExists = assignments.some(
-      (assign) => assignment.cooperator_id === assign.cooperator_id
-    );
-
-    if (alreadyExists) {
-      newValue = assignments.map((assign) => {
-        if (assignment.cooperator_id === assign.cooperator_id) {
-          return assign;
-        }
-        return assignment;
-      });
-    } else {
-      newValue = [...assignments, assignment];
-    }
-
-    console.log(newValue, "value");
-
-    setValue("assignments", newValue);
-    setSelectedCooperatorForException("");
-    setIsExceptionModalOpen(false);
-  };
-
-  const handleRemoveException = (id: string) => {
-    const exceptions = getValues("exceptions");
-    const newValue = exceptions.filter((except) => except.cooperator_id !== id);
-
-    setValue("exceptions", newValue);
-    toast.success("Exceção removida");
-  };
-
-  const handleRemoveAssignment = (id: string) => {
-    const assignments = getValues("assignments");
-    const newValue = assignments.filter(
-      (assign) => assign.cooperator_id !== id
-    );
-
-    setValue("assignments", newValue);
-    toast.success("Agendamento removido");
-  };
-
   const cooperatorsSelected = useMemo(
-    () => mockCooperators.filter((coop) => cooperatorsIds.includes(coop.id)),
-    [cooperatorsIds]
+    () => cooperators?.filter((coop) => cooperatorsIds.includes(coop.id)) || [],
+    [cooperators, cooperatorsIds]
   );
 
   const onSubmit = async (data: ScaleFormValues) => {
     try {
-      // const resultado = await ScaleService.generate(formatScale(data));
-      console.log(data, "data");
       toast("Escala gerada com sucesso!");
       setScaleData(scaleGroup);
       navigate("/resultado");
     } catch {
-      // error handler later
       toast("Houve um erro ao gerar escala!");
     }
   };
-
-  useEffect(() => {
-    const getCooperators = async () => {
-      const cooperators = await CooperatorService.list();
-      setCooperators(cooperators);
-    };
-    getCooperators();
-  }, []);
-
-  console.log(cooperators, "cooperators");
 
   return (
     <>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ScaleLayout
+            cooperators={cooperators}
             scaleName="name"
             cooperatorsWithFlags={cooperatorsWithFlags}
             onAddExceptionForCooperator={handleAddExceptionForCooperator}
             onAddAssignmentForCooperator={handleAddAssignmentForCooperator}
             exceptions={exceptions}
             assignments={assignments}
-            onAddException={handleAddException}
-            onRemoveException={handleRemoveException}
+            onAddException={() => setIsExceptionModalOpen(true)}
+            onRemoveException={(id) =>
+              setValue(
+                "exceptions",
+                getValues("exceptions").filter(
+                  (except) => except.cooperator_id !== id
+                )
+              )
+            }
             onAddAssignment={() => setIsAssignmentModalOpen(true)}
-            onRemoveAssignment={handleRemoveAssignment}
+            onRemoveAssignment={(id) =>
+              setValue(
+                "assignments",
+                getValues("assignments").filter(
+                  (assign) => assign.cooperator_id !== id
+                )
+              )
+            }
           />
         </form>
 
@@ -179,25 +108,33 @@ const Home = () => {
           isOpen={isExceptionModalOpen}
           cooperators={cooperatorsSelected}
           selectedCooperatorId={selectedCooperatorForException}
-          setCooperatorId={(coopId: string) => {
-            setSelectedCooperatorForException(coopId);
-          }}
-          onClose={() => {
-            setSelectedCooperatorForException("");
+          setCooperatorId={setSelectedCooperatorForException}
+          onClose={() => setIsExceptionModalOpen(false)}
+          onSave={(exception) => {
+            setValue("exceptions", [
+              ...getValues("exceptions").filter(
+                (except) => except.cooperator_id !== exception.cooperator_id
+              ),
+              exception,
+            ]);
             setIsExceptionModalOpen(false);
           }}
-          onSave={onSaveException}
         />
 
         <ScheduleAssignmentModal
           isOpen={isAssignmentModalOpen}
           cooperators={cooperatorsSelected}
           selectedCooperatorId={selectedCooperatorForAssignment}
-          onSave={onSaveAssignment}
-          onClose={() => {
-            setSelectedCooperatorForAssignment("");
+          onSave={(assignment) => {
+            setValue("assignments", [
+              ...getValues("assignments").filter(
+                (assign) => assign.cooperator_id !== assignment.cooperator_id
+              ),
+              assignment,
+            ]);
             setIsAssignmentModalOpen(false);
           }}
+          onClose={() => setIsAssignmentModalOpen(false)}
         />
       </FormProvider>
     </>

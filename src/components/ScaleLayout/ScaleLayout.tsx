@@ -5,26 +5,20 @@ import ExceptionList from "@/components/ExceptionList/ExceptionList";
 import ScheduleAssignmentList from "@/components/ScheduleAssignmentList/ScheduleAssignmentList";
 import { Button } from "@/components/ui/button";
 import { Users2 } from "lucide-react";
-import { mockCooperators } from "@/shared/mocks/mockCooperators";
 import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
+import { Cooperator } from "@/shared/types/Cooperator";
 
 interface ScaleLayoutProps {
-  // Scale details
   scaleName: string;
-
-  // Cooperators
-  cooperatorsWithFlags: typeof mockCooperators;
+  cooperatorsWithFlags: Cooperator[];
+  exceptions: Exception[];
+  assignments: AssignmentFormValues[];
+  cooperators: Cooperator[];
   onAddExceptionForCooperator: (id: string) => void;
   onAddAssignmentForCooperator: (id: string) => void;
-
-  // Exceptions
-  exceptions: Exception[];
   onAddException: () => void;
   onRemoveException: (id: string) => void;
-
-  // Assignments
-  assignments: AssignmentFormValues[];
   onAddAssignment: () => void;
   onRemoveAssignment: (id: string) => void;
 }
@@ -40,7 +34,9 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
   assignments,
   onAddAssignment,
   onRemoveAssignment,
+  cooperators,
 }) => {
+  console.log(cooperatorsWithFlags, "coopwithflags");
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto flex h-full flex-col px-4 py-4">
@@ -67,7 +63,7 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
           <div className="animation-delay-100 animate-fade-in grid h-full grid-rows-2 gap-3">
             <ExceptionList
               exceptions={exceptions}
-              cooperators={mockCooperators}
+              cooperators={cooperators}
               onAddException={onAddException}
               onRemoveException={onRemoveException}
               className="h-full overflow-hidden"
@@ -75,7 +71,7 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
 
             <ScheduleAssignmentList
               assignments={assignments}
-              cooperators={mockCooperators}
+              cooperators={cooperators}
               onAddAssignment={onAddAssignment}
               onRemoveAssignment={onRemoveAssignment}
               className="h-full overflow-hidden"

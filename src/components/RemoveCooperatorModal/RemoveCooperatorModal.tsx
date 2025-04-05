@@ -1,6 +1,6 @@
 import {
+  Button,
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -16,15 +16,23 @@ export const RemoveCooperatorModal = ({
   isOpen,
   setIsOpen,
 }: RemoveCooperatorModalProps) => {
+  const onCloseModal = () => {
+    setIsOpen(false);
+  };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Remover cooperador</DialogTitle>
         </DialogHeader>
-        Algo para remover cooperador
-        <DialogFooter>
-          <DialogClose />
+        Tem certeza que deseja excluir o cooperador?
+        <DialogFooter className="flex justify-center">
+          <Button variant="outline" onClick={onCloseModal}>
+            Cancelar
+          </Button>
+          <Button variant="destructive" type="submit">
+            Excluir
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

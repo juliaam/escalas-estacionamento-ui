@@ -19,19 +19,16 @@ const Home = () => {
     useState("");
   const [selectedCooperatorForAssignment, setSelectedCooperatorForAssignment] =
     useState("");
-
+  const { setScaleData } = useScale();
+  const navigate = useNavigate();
+  const { data: cooperators, fetchCooperators } = useCooperators();
   const methods = useForm<ScaleFormValues>({
     defaultValues: scaleForm.initialValues,
   });
   const { handleSubmit, setValue, getValues, watch } = methods;
-  const { setScaleData } = useScale();
   const cooperatorsIds: string[] = watch("cooperatorsIds");
   const exceptions: Exception[] = watch("exceptions");
   const assignments: AssignmentFormValues[] = watch("assignments");
-  const navigate = useNavigate();
-
-  const { data: cooperators } = useCooperators();
-
   const cooperatorsWithFlags = useMemo(
     () =>
       cooperators?.map((cooperator) => ({
@@ -70,6 +67,19 @@ const Home = () => {
       toast("Houve um erro ao gerar escala!");
     }
   };
+
+  useEffect(() => {
+    fetchCooperators();
+  }, []);
+
+  useEffect(() => {
+    if (cooperators.length > 0 && !cooperatorsIds.length) {
+      setValue(
+        "cooperatorsIds",
+        cooperators.map((coop) => coop.id)
+      );
+    }
+  }, [cooperators, cooperatorsIds.length, setValue]); // gambiarra, fazer algo melhor
 
   return (
     <>

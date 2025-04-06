@@ -35,7 +35,6 @@ export const ModalAddCooperators = ({
   onSaveEmit,
   ...props
 }: ModalAddCooperatorsProps) => {
-  const { fetchCooperators } = useCooperators();
   const { reset, handleSubmit, control } = useForm({
     defaultValues: addCooperatorForm.initialValues,
   });

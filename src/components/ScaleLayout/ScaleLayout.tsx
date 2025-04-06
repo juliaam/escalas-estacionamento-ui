@@ -36,7 +36,6 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
   onRemoveAssignment,
   cooperators,
 }) => {
-  console.log(cooperatorsWithFlags, "coopwithflags");
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto flex h-full flex-col px-4 py-4">

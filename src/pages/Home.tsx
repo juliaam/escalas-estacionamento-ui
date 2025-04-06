@@ -130,6 +130,8 @@ const Home = () => {
               exception,
             ]);
             setIsExceptionModalOpen(false);
+            setSelectedCooperatorForException("");
+            toast("Exceção criada com sucesso!");
           }}
         />
 
@@ -145,6 +147,8 @@ const Home = () => {
               assignment,
             ]);
             setIsAssignmentModalOpen(false);
+            setSelectedCooperatorForAssignment("");
+            toast("Agendamento criado com sucesso!");
           }}
           onClose={() => setIsAssignmentModalOpen(false)}
         />

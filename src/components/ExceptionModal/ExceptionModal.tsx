@@ -75,7 +75,6 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   };
 
   const onCloseModal = () => {
-    console.log("fechando modal");
     reset();
     onClose();
   };

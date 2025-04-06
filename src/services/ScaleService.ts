@@ -7,6 +7,7 @@ export class ScaleService {
   private static path = "scale";
 
   static async generate(body: ScaleGenerateBody): Promise<ScaleResult> {
-    return await axios.post(`${apiUrl}/${this.path}`, body);
+    const response = await axios.post(`${apiUrl}/${this.path}`, body);
+    return response.data;
   }
 }

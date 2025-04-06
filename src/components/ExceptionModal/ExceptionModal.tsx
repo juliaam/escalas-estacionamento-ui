@@ -29,6 +29,7 @@ import {
   getWedsnesdayAndSundaysInMonth,
 } from "@/shared/utils/getChurchDays";
 import { Cooperator } from "@/shared/types/Cooperator";
+import { getAvailablePeriod } from "@/shared/utils/availableDays";
 
 type ExceptionModalProps = {
   isOpen: boolean;
@@ -37,11 +38,6 @@ type ExceptionModalProps = {
   setCooperatorId: (coopId: string) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
-};
-
-const getAvailablePeriod = (dayOfWeek: number) => {
-  if (dayOfWeek === 0) return Period.values;
-  return [Period.enum.night];
 };
 
 const ExceptionModal: React.FC<ExceptionModalProps> = ({
@@ -148,17 +144,15 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
                 Período <span className="text-red-600">*</span>
               </Label>
               <Select value={period} onValueChange={onChangePeriod}>
-                <SelectTrigger id="cooperator">
-                  <SelectValue placeholder="Selecione um cooperador" />
+                <SelectTrigger id="period">
+                  <SelectValue placeholder="Selecione o período" />
                 </SelectTrigger>
                 <SelectContent>
-                  {getAvailablePeriod(getDay(date)).map(
-                    (period: keyof typeof Period.enum) => (
-                      <SelectItem key={period} value={period}>
-                        {Period.getLabel(period)}
-                      </SelectItem>
-                    )
-                  )}
+                  {getAvailablePeriod(getDay(date)).map((period) => (
+                    <SelectItem key={period} value={period}>
+                      {Period.getLabel(period)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

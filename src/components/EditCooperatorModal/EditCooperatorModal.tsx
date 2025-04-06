@@ -65,7 +65,7 @@ export const EditCooperatorModal = ({
               <SelectContent>
                 {[
                   { label: "Cooperador", value: "COOPERATOR" },
-                  { label: "Diácuno", value: "DIACUN" },
+                  { label: "Diácuno", value: "DEACUN" },
                 ].map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}

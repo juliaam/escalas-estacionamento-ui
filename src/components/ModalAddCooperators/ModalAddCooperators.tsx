@@ -87,7 +87,7 @@ export const ModalAddCooperators = ({
               <SelectContent>
                 {[
                   { label: "Cooperador", value: "COOPERATOR" },
-                  { label: "Diácuno", value: "DIACUN" },
+                  { label: "Diácuno", value: "DEACUN" },
                 ].map((typeCooperator) => (
                   <SelectItem
                     key={typeCooperator.value}

@@ -1,10 +1,10 @@
 export class Period {
   public static enum = {
-    day: "day",
+    morning: "morning",
     night: "night",
   } as const;
   public static label = {
-    [this.enum.day]: "Dia",
+    [this.enum.morning]: "Dia",
     [this.enum.night]: "Noite",
   };
 
@@ -12,7 +12,7 @@ export class Period {
   public static values = Object.values(this.enum);
 
   public static getLabel(value?: keyof typeof this.enum) {
-    if (!value) return this.label.day;
+    if (!value) return this.label.morning;
     return this.label[value];
   }
 }

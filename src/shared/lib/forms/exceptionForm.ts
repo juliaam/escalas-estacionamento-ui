@@ -13,7 +13,7 @@ class ExceptionForm {
     return {
       cooperator_id: "",
       date: getWedsnesdayAndSundaysInMonth(selectedDate)[0],
-      period: Period.enum.day,
+      period: Period.enum.night,
       reason: "",
     };
   }

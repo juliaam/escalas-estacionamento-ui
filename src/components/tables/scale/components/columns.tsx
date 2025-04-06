@@ -12,6 +12,6 @@ export const cooperatorsColumns: ColumnDef<Scale>[] = [
   },
   {
     accessorKey: "sector",
-    header: "Sector",
+    header: "Setor",
   },
 ];

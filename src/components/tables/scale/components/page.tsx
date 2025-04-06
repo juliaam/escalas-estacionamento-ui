@@ -1,4 +1,4 @@
-import { cooperatorsColumns, Scale } from "./columns";
+import { cooperatorsColumns } from "./columns";
 import { DataTable } from "@/components/tables/shared/dataTable";
 import {
   getCoreRowModel,
@@ -9,15 +9,15 @@ import {
 import { memo } from "react";
 import { fuzzyFilter } from "../../shared/fuzzyfilter";
 
-function getData(): Scale[] {
-  return [];
-}
+type ScaleTableProps = {
+  data: { name: string; sector: string }[];
+};
 
-export const ScaleTable = memo(() => {
+export const ScaleTable = memo(({ data }: ScaleTableProps) => {
   const table = useReactTable({
     columns: cooperatorsColumns,
     enableGlobalFilter: true,
-    data: getData(),
+    data: data,
     globalFilterFn: fuzzyFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

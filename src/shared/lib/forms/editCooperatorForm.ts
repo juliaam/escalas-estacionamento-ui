@@ -1,6 +1,6 @@
 export type EditCooperatorFormValues = {
   hasPinnedException: boolean;
-  type: "DIACUN" | "COOPERATOR";
+  type: "DEACUN" | "COOPERATOR";
 };
 
 class EditCooperatorForm {

@@ -23,12 +23,14 @@ import {
   AssignmentFormValues,
 } from "@/shared/lib/forms/assignmentForm";
 import { Period } from "@/shared/enums/period";
-import { sectors } from "@/shared/mocks/sectors";
 import {
   filterWedsnesdayAndSundaysInMonth,
   getWedsnesdayAndSundaysInMonth,
 } from "@/shared/utils/getChurchDays";
 import { Cooperator } from "@/shared/types/Cooperator";
+import { getAvailablePeriod } from "@/shared/utils/availableDays";
+import { getDay } from "date-fns";
+import { useSectors } from "@/shared/hooks/useSector";
 
 interface ScheduleAssignmentModalProps {
   isOpen: boolean;
@@ -52,6 +54,7 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
   selectedCooperatorId,
   onSave,
 }) => {
+  const { data: sectors, fetchSectors } = useSectors();
   const { getValues, watch } = useFormContext();
   const { control, handleSubmit, reset, ...methods } =
     useForm<AssignmentFormValues>({
@@ -99,6 +102,10 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
   useEffect(() => {
     onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
   }, [selectedDateForScale]);
+
+  useEffect(() => {
+    fetchSectors();
+  }, []);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -159,7 +166,7 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
                   <SelectValue placeholder="Selecione um cooperador" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Period.values.map((period) => (
+                  {getAvailablePeriod(getDay(date)).map((period) => (
                     <SelectItem key={period} value={period}>
                       {Period.getLabel(period)}
                     </SelectItem>

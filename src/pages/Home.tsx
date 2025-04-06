@@ -9,8 +9,9 @@ import { Exception } from "@/shared/types/Exception";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 import { useScale } from "@/shared/hooks/useScale";
 import { useNavigate } from "react-router-dom";
-import { scaleGroup } from "@/shared/mocks/scaleResult";
 import { useCooperators } from "@/shared/hooks/useCooperators";
+import { ScaleService } from "@/services/ScaleService";
+import { formatScale } from "@/shared/utils/formatScale";
 
 const Home = () => {
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
@@ -58,10 +59,10 @@ const Home = () => {
     [cooperators, cooperatorsIds]
   );
 
-  const onSubmit = async (_data: ScaleFormValues) => {
+  const onSubmit = async (data: ScaleFormValues) => {
     try {
-      // const scale = await ScaleService.generate(formatScale(data) as any);
-      setScaleData(scaleGroup);
+      const scale = await ScaleService.generate(formatScale(data) as any);
+      setScaleData(scale);
       toast("Escala gerada com sucesso!");
       navigate("/resultado");
     } catch {

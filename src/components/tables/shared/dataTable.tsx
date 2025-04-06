@@ -25,7 +25,7 @@ export function DataTable<TData>({
   const actualPage = table.getState().pagination.pageIndex + 1;
   return (
     <div>
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-zinc-50">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

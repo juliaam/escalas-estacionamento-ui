@@ -58,10 +58,11 @@ const Home = () => {
     [cooperators, cooperatorsIds]
   );
 
-  const onSubmit = async (data: ScaleFormValues) => {
+  const onSubmit = async (_data: ScaleFormValues) => {
     try {
-      toast("Escala gerada com sucesso!");
+      // const scale = await ScaleService.generate(formatScale(data) as any);
       setScaleData(scaleGroup);
+      toast("Escala gerada com sucesso!");
       navigate("/resultado");
     } catch {
       toast("Houve um erro ao gerar escala!");

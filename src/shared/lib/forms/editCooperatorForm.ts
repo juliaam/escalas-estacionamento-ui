@@ -6,6 +6,7 @@ export type EditCooperatorFormValues = {
 class EditCooperatorForm {
   public initialValues: EditCooperatorFormValues = {
     hasPinnedException: false,
+    type: "COOPERATOR",
   };
 }
 

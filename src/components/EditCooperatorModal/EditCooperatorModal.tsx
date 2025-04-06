@@ -47,7 +47,7 @@ export const EditCooperatorModal = ({
     setIsOpen(false);
   };
 
-  const onSave = (data: EditCooperatorFormValues) => {};
+  const onSave = (_data: EditCooperatorFormValues) => {};
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

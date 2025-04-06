@@ -1,4 +1,3 @@
-import { scaleGroup } from "@/shared/mocks/scaleResult";
 import { ScaleResult } from "@/shared/types/ScaleResult";
 import { createContext } from "react";
 

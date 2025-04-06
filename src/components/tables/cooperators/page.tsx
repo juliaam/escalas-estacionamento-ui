@@ -8,9 +8,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { memo, useEffect, useMemo } from "react";
 import { fuzzyFilter } from "../shared/fuzzyfilter";
-import { useCooperators } from "@/shared/hooks/useCooperators";
 
 type CooperatorsTableProps = {
   onClickAddCooperator: () => void;
@@ -41,7 +39,7 @@ export const CooperatorsTable = ({
         <div className="w-1/4">
           <AppInputSearch
             placeholder="Pesquise cooperadores..."
-            className="w-full"
+            className="w-full bg-zinc-50"
             onChangeValue={table.setGlobalFilter}
           />
         </div>

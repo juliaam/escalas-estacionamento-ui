@@ -19,6 +19,7 @@ import DatePicker from "@/components/DatePicker/DatePicker";
 import { Textarea } from "../ui";
 import { Period } from "@/shared/enums/period";
 import { useController, useForm, useFormContext } from "react-hook-form";
+import { getDay } from "date-fns";
 import {
   exceptionForm,
   ExceptionsFormValues,
@@ -29,14 +30,19 @@ import {
 } from "@/shared/utils/getChurchDays";
 import { Cooperator } from "@/shared/types/Cooperator";
 
-interface ExceptionModalProps {
+type ExceptionModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSave: (exception: ExceptionsFormValues) => void;
   setCooperatorId: (coopId: string) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
-}
+};
+
+const getAvailablePeriod = (dayOfWeek: number) => {
+  if (dayOfWeek === 0) return Period.values;
+  return [Period.enum.night];
+};
 
 const ExceptionModal: React.FC<ExceptionModalProps> = ({
   isOpen,
@@ -87,6 +93,9 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   useEffect(() => {
     onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
   }, [selectedDateForScale]);
+
+  console.log(date, "date");
+  console.log(getDay(date));
 
   return (
     <Dialog open={isOpen} onOpenChange={onCloseModal}>
@@ -143,11 +152,13 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
                   <SelectValue placeholder="Selecione um cooperador" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Period.values.map((period) => (
-                    <SelectItem key={period} value={period}>
-                      {Period.getLabel(period)}
-                    </SelectItem>
-                  ))}
+                  {getAvailablePeriod(getDay(date)).map(
+                    (period: keyof typeof Period.enum) => (
+                      <SelectItem key={period} value={period}>
+                        {Period.getLabel(period)}
+                      </SelectItem>
+                    )
+                  )}
                 </SelectContent>
               </Select>
             </div>

@@ -1,7 +1,6 @@
 import { ScaleFormValues } from "../lib/forms/scaleForm";
 
 export function formatScale({
-  name,
   cooperatorsIds,
   exceptions,
   assignments,
@@ -27,8 +26,7 @@ export function formatScale({
       }),
   }));
   return {
-    name,
-    date: date.toISOString(),
+    selected_date: date.toISOString(),
     cooperators,
   };
 }

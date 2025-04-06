@@ -23,7 +23,6 @@ import {
   AddCooperatorFormValues,
   addCooperatorForm,
 } from "@/shared/lib/forms/addCooperatorForm";
-import { useCooperators } from "@/shared/hooks/useCooperators";
 
 type ModalAddCooperatorsProps = DialogProps & {
   onClose: () => void;

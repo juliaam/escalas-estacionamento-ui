@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Save } from "lucide-react";
-import { cn } from "@/shared/utils/twMerge";
 import MonthPicker from "@/components/MonthPicker/MonthPicker";
 import { Label } from "@/components/ui/label";
 import { useController, useFormContext } from "react-hook-form";
@@ -21,7 +20,7 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({ className }) => {
   } = useController({ name: "date", control });
 
   return (
-    <div className={cn("space-y-6", className)}>
+    <div className={className}>
       <div className="flex items-center justify-end">
         <Button type="submit" className="gap-1.5">
           <Save className="h-4 w-4" />

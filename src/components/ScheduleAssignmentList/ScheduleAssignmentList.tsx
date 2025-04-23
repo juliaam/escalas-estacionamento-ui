@@ -2,13 +2,14 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Calendar, Plus, X } from "lucide-react";
+import { Calendar, Moon, Plus, Sun, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/shared/utils/twMerge";
 import { useFormContext } from "react-hook-form";
 import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 import { Cooperator } from "@/shared/types/Cooperator";
 import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
+import { Period } from "@/shared/enums/period";
 
 interface ScheduleAssignmentListProps {
   assignments: AssignmentFormValues[];
@@ -64,11 +65,27 @@ const ScheduleAssignmentList: React.FC<ScheduleAssignmentListProps> = ({
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium">
+                      <div className="text-md truncate font-medium">
                         {cooperator?.name || "Cooperador"}
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        Data: {format(assignment.date, "dd/MM/yyyy")}
+                      <div className="flex gap-1 text-sm text-muted-foreground">
+                        <span>
+                          Data: {format(assignment.date, "dd/MM/yyyy")}
+                        </span>
+                        <span
+                          className={cn(
+                            "flex items-center gap-1",
+                            assignment.period === Period.enum.morning
+                              ? "text-yellow-500"
+                              : "text-blue-500"
+                          )}
+                        >
+                          {assignment.period === Period.enum.morning ? (
+                            <Sun size={16} />
+                          ) : (
+                            <Moon size={16} />
+                          )}
+                        </span>
                       </div>
                     </div>
 

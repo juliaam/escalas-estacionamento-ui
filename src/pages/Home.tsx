@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useCooperators } from "@/shared/hooks/useCooperators";
 import { ScaleService } from "@/services/ScaleService";
 import { formatScale } from "@/shared/utils/formatScale";
+import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
 
 const Home = () => {
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
@@ -59,9 +60,23 @@ const Home = () => {
     [cooperators, cooperatorsIds]
   );
 
+  const onSaveException = (exception: ExceptionsFormValues) => {
+    setValue("exceptions", [...getValues("exceptions"), exception]);
+    setIsExceptionModalOpen(false);
+    setSelectedCooperatorForException("");
+    toast("Exceção criada com sucesso!");
+  };
+
+  const onSaveAssignment = (assignment: AssignmentFormValues) => {
+    setValue("assignments", [...getValues("assignments"), assignment]);
+    setIsAssignmentModalOpen(false);
+    setSelectedCooperatorForAssignment("");
+    toast("Agendamento criado com sucesso!");
+  };
+
   const onSubmit = async (data: ScaleFormValues) => {
     try {
-      const scale = await ScaleService.generate(formatScale(data) as any);
+      const scale = await ScaleService.generate(formatScale(data) as never);
       setScaleData(scale);
       toast("Escala gerada com sucesso!");
       navigate("/resultado");
@@ -122,34 +137,14 @@ const Home = () => {
           selectedCooperatorId={selectedCooperatorForException}
           setCooperatorId={setSelectedCooperatorForException}
           onClose={() => setIsExceptionModalOpen(false)}
-          onSave={(exception) => {
-            setValue("exceptions", [
-              ...getValues("exceptions").filter(
-                (except) => except.cooperator_id !== exception.cooperator_id
-              ),
-              exception,
-            ]);
-            setIsExceptionModalOpen(false);
-            setSelectedCooperatorForException("");
-            toast("Exceção criada com sucesso!");
-          }}
+          onSave={onSaveException}
         />
 
         <ScheduleAssignmentModal
           isOpen={isAssignmentModalOpen}
           cooperators={cooperatorsSelected}
           selectedCooperatorId={selectedCooperatorForAssignment}
-          onSave={(assignment) => {
-            setValue("assignments", [
-              ...getValues("assignments").filter(
-                (assign) => assign.cooperator_id !== assignment.cooperator_id
-              ),
-              assignment,
-            ]);
-            setIsAssignmentModalOpen(false);
-            setSelectedCooperatorForAssignment("");
-            toast("Agendamento criado com sucesso!");
-          }}
+          onSave={onSaveAssignment}
           onClose={() => setIsAssignmentModalOpen(false)}
         />
       </FormProvider>

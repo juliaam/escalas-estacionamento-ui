@@ -89,9 +89,6 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
     onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
   }, [selectedDateForScale]);
 
-  console.log(date, "date");
-  console.log(getDay(date));
-
   return (
     <Dialog open={isOpen} onOpenChange={onCloseModal}>
       <DialogContent className="animate-slide-up sm:max-w-[425px]">

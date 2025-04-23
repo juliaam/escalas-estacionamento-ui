@@ -107,8 +107,6 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
     fetchSectors();
   }, []);
 
-  console.log(selectedCooperatorId, "oi");
-
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="animate-slide-up sm:max-w-[425px]">

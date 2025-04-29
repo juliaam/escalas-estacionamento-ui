@@ -27,7 +27,7 @@ type EditCooperatorModalProps = {
   setIsOpen: (open: boolean) => void;
 };
 
-export const EditCooperatorModal = ({
+export const ModalEditCooperator = ({
   isOpen,
   setIsOpen,
 }: EditCooperatorModalProps) => {

@@ -5,24 +5,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Label,
 } from "@/components/ui";
 import { DialogProps } from "@radix-ui/react-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { useController, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { CooperatorService } from "@/services/CooperatorService";
 import {
   AddCooperatorFormValues,
   addCooperatorForm,
 } from "@/shared/lib/forms/addCooperatorForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormSelect } from "../forms";
+import { Cooperator } from "@/shared/enums/cooperatorType";
+import { FormInput } from "../forms/FormInput/FormInput";
 
 type ModalAddCooperatorsProps = DialogProps & {
   onClose: () => void;
@@ -34,18 +29,11 @@ export const ModalAddCooperators = ({
   onSaveEmit,
   ...props
 }: ModalAddCooperatorsProps) => {
-  const { reset, handleSubmit, control } = useForm({
+  const methods = useForm({
     defaultValues: addCooperatorForm.initialValues,
+    resolver: zodResolver(addCooperatorForm.validationSchema),
   });
-  const {
-    field: { value: name, onChange: onChangeName },
-  } = useController({ name: "name", control });
-  const {
-    field: { value: telephone, onChange: onChangeTelephone },
-  } = useController({ name: "telephone", control });
-  const {
-    field: { value: type, onChange: onChangeType },
-  } = useController({ name: "type", control });
+  const { reset, handleSubmit } = methods;
 
   const handleClose = () => {
     reset();
@@ -69,45 +57,28 @@ export const ModalAddCooperators = ({
         <DialogHeader>
           <DialogTitle>Adicionar cooperador</DialogTitle>
         </DialogHeader>
-        <form className="grid gap-4" onSubmit={handleSubmit(handleSave)}>
-          <div className="grid gap-2">
-            <Label>
-              Nome <span className="text-red-600">*</span>
-            </Label>
-            <Input value={name} onChange={onChangeName} />
-          </div>
-          <div className="grid gap-2">
-            <Label>
-              Tipo <span className="text-red-600">*</span>
-            </Label>
-            <Select value={type} onValueChange={onChangeType}>
-              <SelectTrigger id="type">
-                <SelectValue placeholder="Selecione um tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                {[
-                  { label: "Cooperador", value: "COOPERATOR" },
-                  { label: "Diácuno", value: "DEACUN" },
-                ].map((typeCooperator) => (
-                  <SelectItem
-                    key={typeCooperator.value}
-                    value={typeCooperator.value}
-                  >
-                    {typeCooperator.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2">
-            <Label>Telefone</Label>
-            <Input value={telephone} onChange={onChangeTelephone} />
-          </div>
-          <DialogFooter>
-            <Button variant="outline">Cancelar</Button>
-            <Button type="submit">Adicionar</Button>
-          </DialogFooter>
-        </form>
+        <FormProvider {...methods}>
+          <form className="grid gap-4" onSubmit={handleSubmit(handleSave)}>
+            <FormInput label="Nome" name="name" />
+            <FormSelect
+              label="Tipo"
+              name="type"
+              placeholder="Selecione um tipo"
+              required
+              options={Cooperator.values.map((value) => ({
+                label: Cooperator.getLabel(value),
+                value: value,
+              }))}
+            />
+            <FormInput label="Telefone" name="telephone" />
+            <DialogFooter>
+              <Button variant="outline" onClick={handleClose}>
+                Cancelar
+              </Button>
+              <Button type="submit">Adicionar</Button>
+            </DialogFooter>
+          </form>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

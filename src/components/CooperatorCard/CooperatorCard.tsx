@@ -87,14 +87,21 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
 
       <div className="ml-2 flex items-center space-x-2">
         {isSelected ? (
-          <button
-            type="button"
-            onClick={() => onToggle(cooperator.id)}
-            className="rounded-full p-1.5 text-destructive transition-colors hover:bg-destructive/10"
-            aria-label="Remover cooperador"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={() => onToggle(cooperator.id)}
+                className="rounded-full p-1.5 text-destructive transition-colors hover:bg-destructive/10"
+                aria-label="Remover cooperador"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="z-[1] rounded-md bg-white p-1 shadow-md">
+              Remover da escala
+            </TooltipContent>
+          </Tooltip>
         ) : (
           <button
             type="button"
@@ -118,7 +125,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
               <Clock className="h-4 w-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent className="rounded-md bg-gray-50 px-2 py-1 text-black">
+          <TooltipContent className="z-[1] rounded-md bg-white p-1 shadow-md">
             Adicionar exceção
           </TooltipContent>
         </Tooltip>
@@ -136,7 +143,7 @@ const CooperatorCard: React.FC<CooperatorCardProps> = ({
               <Calendar className="h-4 w-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent className="rounded-md bg-gray-50 px-2 py-1 text-black">
+          <TooltipContent className="z-[1] rounded-md bg-white p-1 shadow-md">
             Adicionar agendamento
           </TooltipContent>
         </Tooltip>

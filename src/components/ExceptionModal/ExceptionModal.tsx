@@ -7,18 +7,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import DatePicker from "@/components/DatePicker/DatePicker";
-import { Textarea } from "../ui";
 import { Period } from "@/shared/enums/period";
-import { useController, useForm, useFormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { getDay } from "date-fns";
 import {
   exceptionForm,
@@ -30,6 +20,9 @@ import {
 } from "@/shared/utils/getChurchDays";
 import { Cooperator } from "@/shared/types/Cooperator";
 import { getAvailablePeriod } from "@/shared/utils/availableDays";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { FormDatePicker, FormSelect, FormTextarea } from "../forms";
 
 type ExceptionModalProps = {
   isOpen: boolean;
@@ -38,6 +31,7 @@ type ExceptionModalProps = {
   setCooperatorId: (coopId: string) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
+  selectedDate?: Date;
 };
 
 const ExceptionModal: React.FC<ExceptionModalProps> = ({
@@ -46,28 +40,28 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
   onSave,
   cooperators,
   selectedCooperatorId,
+  selectedDate,
 }) => {
-  const { getValues, watch } = useFormContext();
-  const { handleSubmit, control, reset } = useForm<ExceptionsFormValues>({
-    defaultValues: exceptionForm.initialValues(getValues("date")),
+  const methods = useForm<ExceptionsFormValues>({
+    defaultValues: exceptionForm.initialValues(selectedDate!),
+    resolver: zodResolver(exceptionForm.validationSchema),
   });
-  const {
-    field: { value: cooperatorId, onChange: onChangeCooperatorId },
-  } = useController({
-    name: "cooperator_id",
-    control,
-    defaultValue: selectedCooperatorId,
-  });
-  const {
-    field: { value: date, onChange: onChangeDate },
-  } = useController({ name: "date", control });
-  const {
-    field: { value: period, onChange: onChangePeriod },
-  } = useController({ name: "period", control });
-  const {
-    field: { value: reason, onChange: onChangeReason },
-  } = useController({ name: "reason", control });
-  const selectedDateForScale: Date = watch("date");
+
+  const { reset, handleSubmit, watch, setValue } = methods;
+  const selectedDateForScale = watch("date");
+  const currentDate = watch("date");
+
+  const cooperatorOptions = cooperators.map((cooperator) => ({
+    value: cooperator.id,
+    label: cooperator.name,
+  }));
+
+  const getPeriodOptions = (date: Date) => {
+    return getAvailablePeriod(getDay(date)).map((periodValue) => ({
+      value: periodValue,
+      label: Period.getLabel(periodValue),
+    }));
+  };
 
   const onSubmit = (data: ExceptionsFormValues) => {
     onSave(data);
@@ -81,91 +75,74 @@ const ExceptionModal: React.FC<ExceptionModalProps> = ({
 
   useEffect(() => {
     if (selectedCooperatorId) {
-      onChangeCooperatorId(selectedCooperatorId);
+      setValue("cooperator_id", selectedCooperatorId);
     }
-  }, [selectedCooperatorId]);
+  }, [selectedCooperatorId, setValue]);
 
   useEffect(() => {
-    onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
-  }, [selectedDateForScale]);
+    if (selectedDate) {
+      const firstAvailableDate =
+        getWedsnesdayAndSundaysInMonth(selectedDate)[0];
+      setValue("date", firstAvailableDate);
+    }
+  }, [selectedDate, setValue]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onCloseModal}>
-      <DialogContent className="animate-slide-up sm:max-w-[425px]">
-        <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
-              Adicionar Exceção
-            </DialogTitle>
-          </DialogHeader>
+      <DialogContent className="animate-slide-up sm:max-w-md">
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold">
+                Adicionar Exceção
+              </DialogTitle>
+            </DialogHeader>
 
-          <div className="grid gap-2">
-            <Label htmlFor="cooperator">
-              Cooperador <span className="text-red-600">*</span>
-            </Label>
-            <Select
-              disabled={!!selectedCooperatorId}
-              value={cooperatorId}
-              onValueChange={onChangeCooperatorId}
-            >
-              <SelectTrigger id="cooperator">
-                <SelectValue placeholder="Selecione um cooperador" />
-              </SelectTrigger>
-              <SelectContent>
-                {cooperators.map((cooperator) => (
-                  <SelectItem key={cooperator.id} value={cooperator.id}>
-                    {cooperator.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="grid gap-4 py-4">
+              <FormSelect
+                name="cooperator_id"
+                label="Cooperador"
+                placeholder="Selecione um cooperador"
+                options={cooperatorOptions}
+                disabled={!!selectedCooperatorId}
+                required
+              />
 
-          <div className="flex w-full gap-x-2">
-            <div className="grid flex-1 gap-2">
-              <Label htmlFor="date">
-                Data da Exceção <span className="text-red-600">*</span>
-              </Label>
-              <DatePicker
-                id="date"
-                month={selectedDateForScale}
-                disabled={filterWedsnesdayAndSundaysInMonth()}
-                date={date}
-                onSelect={onChangeDate}
-                placeholder="Selecione a data"
+              <div className="flex w-full gap-x-2">
+                <div className="flex-1">
+                  <FormDatePicker
+                    name="date"
+                    label="Data da Exceção"
+                    month={selectedDateForScale}
+                    disabledDates={filterWedsnesdayAndSundaysInMonth()}
+                    required
+                  />
+                </div>
+                <div className="flex-1">
+                  <FormSelect
+                    name="period"
+                    label="Período"
+                    placeholder="Selecione o período"
+                    options={getPeriodOptions(currentDate)}
+                    required
+                  />
+                </div>
+              </div>
+              <FormTextarea
+                name="reason"
+                label="Motivo"
+                placeholder="Informe o motivo da exceção (opcional)"
               />
             </div>
-            <div className="grid w-full flex-1 gap-2">
-              <Label htmlFor="cooperator">
-                Período <span className="text-red-600">*</span>
-              </Label>
-              <Select value={period} onValueChange={onChangePeriod}>
-                <SelectTrigger id="period">
-                  <SelectValue placeholder="Selecione o período" />
-                </SelectTrigger>
-                <SelectContent>
-                  {getAvailablePeriod(getDay(date)).map((period) => (
-                    <SelectItem key={period} value={period}>
-                      {Period.getLabel(period)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
 
-          <div className="grid gap-2">
-            <Label>Motivo (opcional)</Label>
-            <Textarea value={reason} onChange={onChangeReason} />
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={onCloseModal}>
-              Cancelar
-            </Button>
-            <Button type="submit">Salvar Exceção</Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button variant="outline" type="button" onClick={onCloseModal}>
+                Cancelar
+              </Button>
+              <Button type="submit">Salvar Exceção</Button>
+            </DialogFooter>
+          </form>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

@@ -1,4 +1,4 @@
-import { EditCooperatorModal } from "@/components/EditCooperatorModal/EditCooperatorModal";
+import { ModalEditCooperator } from "@/components/ModalEditCooperator/ModalEditCooperator";
 import { RemoveCooperatorModal } from "@/components/RemoveCooperatorModal/RemoveCooperatorModal";
 import { AppTooltipIconButton } from "@/components/ui/application/TooltipIconButton";
 import { Wrench, X } from "lucide-react";
@@ -21,7 +21,7 @@ export const CooperatorsActions = () => {
   };
   return (
     <div className="flex gap-x-2">
-      <EditCooperatorModal isOpen={openEdit} setIsOpen={setOpenEdit} />
+      <ModalEditCooperator isOpen={openEdit} setIsOpen={setOpenEdit} />
       <RemoveCooperatorModal isOpen={openDelete} setIsOpen={setOpenDelete} />
       <AppTooltipIconButton
         className="border border-black hover:bg-gray-700 hover:text-white"

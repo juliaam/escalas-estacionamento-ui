@@ -13,21 +13,25 @@ import { useCooperators } from "@/shared/hooks/useCooperators";
 import { ScaleService } from "@/services/ScaleService";
 import { formatScale } from "@/shared/utils/formatScale";
 import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
+import { Cooperator } from "@/shared/types/Cooperator";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const { setScaleData } = useScale();
+  const { data: cooperators, fetchCooperators } = useCooperators();
+  const methods = useForm<ScaleFormValues>({
+    defaultValues: scaleForm.initialValues,
+    resolver: zodResolver(scaleForm.validationSchema),
+  });
+  const { handleSubmit, setValue, getValues, watch } = methods;
+
   const [isExceptionModalOpen, setIsExceptionModalOpen] = useState(false);
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [selectedCooperatorForException, setSelectedCooperatorForException] =
     useState("");
   const [selectedCooperatorForAssignment, setSelectedCooperatorForAssignment] =
     useState("");
-  const { setScaleData } = useScale();
-  const navigate = useNavigate();
-  const { data: cooperators, fetchCooperators } = useCooperators();
-  const methods = useForm<ScaleFormValues>({
-    defaultValues: scaleForm.initialValues,
-  });
-  const { handleSubmit, setValue, getValues, watch } = methods;
   const cooperatorsIds: string[] = watch("cooperatorsIds");
   const exceptions: Exception[] = watch("exceptions");
   const assignments: AssignmentFormValues[] = watch("assignments");
@@ -74,6 +78,22 @@ const Home = () => {
     toast("Agendamento criado com sucesso!");
   };
 
+  const onRemoveException = (id: Cooperator["id"]) => {
+    setValue(
+      "exceptions",
+      getValues("exceptions").filter((except) => except.cooperator_id !== id)
+    );
+    toast("Excessão removida com sucesso!");
+  };
+
+  const onRemoveAssignment = (id: Cooperator["id"]) => {
+    setValue(
+      "assignments",
+      getValues("assignments").filter((assign) => assign.cooperator_id !== id)
+    );
+    toast("Agendamento removido com sucesso!");
+  };
+
   const onSubmit = async (data: ScaleFormValues) => {
     try {
       const scale = await ScaleService.generate(formatScale(data) as never);
@@ -105,29 +125,15 @@ const Home = () => {
           <ScaleLayout
             cooperators={cooperators}
             scaleName="name"
+            exceptions={exceptions}
+            assignments={assignments}
             cooperatorsWithFlags={cooperatorsWithFlags}
             onAddExceptionForCooperator={handleAddExceptionForCooperator}
             onAddAssignmentForCooperator={handleAddAssignmentForCooperator}
-            exceptions={exceptions}
-            assignments={assignments}
             onAddException={() => setIsExceptionModalOpen(true)}
-            onRemoveException={(id) =>
-              setValue(
-                "exceptions",
-                getValues("exceptions").filter(
-                  (except) => except.cooperator_id !== id
-                )
-              )
-            }
             onAddAssignment={() => setIsAssignmentModalOpen(true)}
-            onRemoveAssignment={(id) =>
-              setValue(
-                "assignments",
-                getValues("assignments").filter(
-                  (assign) => assign.cooperator_id !== id
-                )
-              )
-            }
+            onRemoveException={onRemoveException}
+            onRemoveAssignment={onRemoveAssignment}
           />
         </form>
 

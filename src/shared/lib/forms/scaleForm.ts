@@ -1,40 +1,43 @@
+import { z } from "zod";
 import { Period } from "@/shared/enums/period";
-import { Cooperator } from "@/shared/types/Cooperator";
-import { Exception } from "@/shared/types/Exception";
-import { AssignmentFormValues } from "./assignmentForm";
+import { getWedsnesdayAndSundaysInMonth } from "@/shared/utils/getChurchDays";
 
-export type CooperatorBodyForm = {
-  id: string;
-  exceptions: Exception[];
-};
-
-export type SectorAssignments = {
-  id: string;
-  cooperators_ids: string[];
-};
-
-export type AssignmentsCooperators = {
-  cooperator_id: Cooperator["id"];
-  date: Date;
-  period: keyof typeof Period.enum;
-  sector: SectorAssignments[];
-};
-
-export type ScaleFormValues = {
-  name: string;
-  date: Date;
-  cooperatorsIds: Cooperator["id"][];
-  assignments: AssignmentFormValues[];
-  exceptions: Exception[];
-};
+export type ScaleFormValues = z.infer<typeof scaleForm.validationSchema>;
 
 class ScaleForm {
+  public validationSchema = z.object({
+    date: z.date(),
+    cooperatorsIds: z.array(
+      z.string().nonempty("ID do cooperador é obrigatório")
+    ),
+    assignments: z.array(
+      z.object({
+        cooperator_id: z
+          .string()
+          .nonempty("É necessário que tenha um cooperador escolhido"),
+        date: z.date(),
+        period: z.enum(Period.values as ["morning", "night"]),
+        sector: z.string().nonempty("Setor é obrigatório"),
+        reason: z.string().optional(),
+      })
+    ),
+    exceptions: z.array(
+      z.object({
+        cooperator_id: z
+          .string()
+          .nonempty("É necessário que tenha um cooperador escolhido"),
+        date: z.date(),
+        period: z.enum(Period.values as ["morning", "night"]),
+        reason: z.string(),
+      })
+    ),
+  });
+
   public initialValues: ScaleFormValues = {
-    name: "",
-    date: new Date(),
+    date: getWedsnesdayAndSundaysInMonth(new Date())[0],
     cooperatorsIds: [],
-    exceptions: [],
     assignments: [],
+    exceptions: [],
   };
 }
 

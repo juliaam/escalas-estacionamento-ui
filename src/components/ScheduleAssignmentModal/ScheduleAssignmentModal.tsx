@@ -7,30 +7,23 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import DatePicker from "@/components/DatePicker/DatePicker";
-import { Textarea } from "../ui";
-import { useController, useForm, useFormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import {
   assignmentForm,
   AssignmentFormValues,
 } from "@/shared/lib/forms/assignmentForm";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Period } from "@/shared/enums/period";
 import {
-  filterWedsnesdayAndSundaysInMonth,
   getWedsnesdayAndSundaysInMonth,
+  filterWedsnesdayAndSundaysInMonth,
 } from "@/shared/utils/getChurchDays";
-import { Cooperator } from "@/shared/types/Cooperator";
 import { getAvailablePeriod } from "@/shared/utils/availableDays";
 import { getDay } from "date-fns";
+import { Cooperator } from "@/shared/types/Cooperator";
 import { useSectors } from "@/shared/hooks/useSector";
+
+import { FormSelect, FormDatePicker, FormTextarea } from "../forms";
 
 interface ScheduleAssignmentModalProps {
   isOpen: boolean;
@@ -38,174 +31,146 @@ interface ScheduleAssignmentModalProps {
   onSave: (data: AssignmentFormValues) => void;
   cooperators: Cooperator[];
   selectedCooperatorId?: string;
-}
-
-export interface AssignmentData {
-  cooperatorId: string;
-  date: Date;
-  id: string;
-  reason: string;
+  selectedDate?: Date;
 }
 
 const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
   isOpen,
   onClose,
+  onSave,
   cooperators,
   selectedCooperatorId,
-  onSave,
+  selectedDate,
 }) => {
-  const { data: sectors, fetchSectors } = useSectors();
-  const { getValues, watch } = useFormContext();
-  const { control, handleSubmit, reset, ...methods } =
-    useForm<AssignmentFormValues>({
-      defaultValues: assignmentForm.initialValues(getValues("date")),
-    });
-  const {
-    field: { onChange: onChangeCooperatorId, value: cooperator_id },
-  } = useController({
-    name: "cooperator_id",
-    control,
-    defaultValue: selectedCooperatorId,
+  const methods = useForm<AssignmentFormValues>({
+    defaultValues: assignmentForm.initialValues(selectedDate!),
+    resolver: zodResolver(assignmentForm.validationSchema),
   });
-  const {
-    field: { onChange: onChangeDate, value: date },
-  } = useController({ name: "date", control });
-  const {
-    field: { value: period, onChange: onChangePeriod },
-  } = useController({ name: "period", control });
-  const {
-    field: { onChange: onChangeSector, value: sector },
-  } = useController({ name: "sector", control });
-  const {
-    field: { onChange: onChangeReason, value: reason },
-  } = useController({ name: "reason", control });
 
-  const selectedDateForScale: Date = watch("date");
+  const {
+    reset,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = methods;
+  const selectedDateForScale = watch("date");
+  const currentDate = watch("date");
 
-  const handleSave = (data: AssignmentFormValues) => {
-    onSave(data);
-    reset();
-    handleClose();
+  const { data: sectors, fetchSectors } = useSectors();
+
+  const sectorOptions = sectors.map((sector) => ({
+    label: sector.name,
+    value: sector.id,
+  }));
+
+  const cooperatorOptions = cooperators.map((cooperator) => ({
+    label: cooperator.name,
+    value: cooperator.id,
+  }));
+
+  const getPeriodOptions = (date: Date) => {
+    return getAvailablePeriod(getDay(date)).map((periodValue) => ({
+      value: periodValue,
+      label: Period.getLabel(periodValue),
+    }));
   };
 
-  const handleClose = () => {
+  const onSubmit = (data: AssignmentFormValues) => {
+    onSave(data);
+    reset();
+  };
+
+  const onCloseModal = () => {
     reset();
     onClose();
   };
 
-  useEffect(() => {
-    if (selectedCooperatorId) {
-      onChangeCooperatorId(selectedCooperatorId);
-    }
-  }, [selectedCooperatorId]);
+  console.log(errors, "errors");
 
   useEffect(() => {
-    onChangeDate(getWedsnesdayAndSundaysInMonth(selectedDateForScale)[0]);
-  }, [selectedDateForScale]);
+    if (selectedCooperatorId) {
+      setValue("cooperator_id", selectedCooperatorId);
+    }
+  }, [selectedCooperatorId, setValue]);
+
+  useEffect(() => {
+    if (selectedDate) {
+      const firstAvailableDate =
+        getWedsnesdayAndSundaysInMonth(selectedDate)[0];
+      setValue("date", firstAvailableDate);
+    }
+  }, [selectedDate, setValue]);
 
   useEffect(() => {
     fetchSectors();
   }, []);
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="animate-slide-up sm:max-w-[425px]">
-        <form
-          className="grid gap-4 py-4"
-          {...methods}
-          onSubmit={handleSubmit(handleSave)}
-        >
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
-              Agendar Cooperador
-            </DialogTitle>
-          </DialogHeader>
+    <Dialog open={isOpen} onOpenChange={onCloseModal}>
+      <DialogContent className="animate-slide-up sm:max-w-md">
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold">
+                Agendar Escala
+              </DialogTitle>
+            </DialogHeader>
 
-          <div className="grid gap-2">
-            <Label htmlFor="cooperator">
-              Cooperador <span className="text-red-600">*</span>
-            </Label>
-            <Select
-              value={cooperator_id}
-              onValueChange={onChangeCooperatorId}
-              disabled={!!selectedCooperatorId}
-            >
-              <SelectTrigger id="cooperator">
-                <SelectValue placeholder="Selecione um cooperador" />
-              </SelectTrigger>
-              <SelectContent>
-                {cooperators.map((cooperator) => (
-                  <SelectItem key={cooperator.id} value={cooperator.id}>
-                    {cooperator.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="grid gap-4 py-4">
+              <FormSelect
+                name="cooperator_id"
+                label="Cooperador"
+                placeholder="Selecione um cooperador"
+                options={cooperatorOptions}
+                disabled={!!selectedCooperatorId}
+                required
+              />
 
-          <div className="flex w-full gap-x-2">
-            <div className="grid flex-1 gap-2">
-              <Label htmlFor="date">
-                Data da escolha <span className="text-red-600">*</span>
-              </Label>
-              <DatePicker
-                id="date"
-                month={selectedDateForScale}
-                disabled={filterWedsnesdayAndSundaysInMonth()}
-                date={date}
-                onSelect={onChangeDate}
-                placeholder="Selecione a data"
+              <FormSelect
+                name="sector"
+                label="Setor"
+                placeholder="Selecione um setor"
+                options={sectorOptions}
+                required
+              />
+
+              <div className="flex w-full gap-x-2">
+                <div className="flex-1">
+                  <FormDatePicker
+                    name="date"
+                    label="Data"
+                    month={selectedDateForScale}
+                    disabledDates={filterWedsnesdayAndSundaysInMonth()}
+                    required
+                  />
+                </div>
+                <div className="flex-1">
+                  <FormSelect
+                    name="period"
+                    label="Período"
+                    placeholder="Selecione o período"
+                    options={getPeriodOptions(currentDate)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <FormTextarea
+                name="note"
+                label="Observações"
+                placeholder="Observações (opcional)"
               />
             </div>
-            <div className="grid w-full flex-1 gap-2">
-              <Label htmlFor="cooperator">
-                Período <span className="text-red-600">*</span>
-              </Label>
-              <Select value={period} onValueChange={onChangePeriod}>
-                <SelectTrigger id="cooperator">
-                  <SelectValue placeholder="Selecione um cooperador" />
-                </SelectTrigger>
-                <SelectContent>
-                  {getAvailablePeriod(getDay(date)).map((period) => (
-                    <SelectItem key={period} value={period}>
-                      {Period.getLabel(period)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="sector">
-              Setor <span className="text-red-600">*</span>
-            </Label>
-            <Select value={sector} onValueChange={onChangeSector}>
-              <SelectTrigger id="sector">
-                <SelectValue placeholder="Selecione um setor" />
-              </SelectTrigger>
-              <SelectContent>
-                {sectors.map((sec) => (
-                  <SelectItem key={sec.id} value={sec.id}>
-                    {sec.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="grid gap-2">
-            <Label>Motivo</Label>
-            <Textarea value={reason} onChange={onChangeReason} />
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button type="submit">Agendar</Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button variant="outline" type="button" onClick={onCloseModal}>
+                Cancelar
+              </Button>
+              <Button type="submit">Agendar</Button>
+            </DialogFooter>
+          </form>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

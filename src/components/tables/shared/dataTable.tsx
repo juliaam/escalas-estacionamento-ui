@@ -17,12 +17,15 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function DataTable<TData>({
   table,
   hasPagination = true,
+  isLoading,
 }: DataTableProps<TData>) {
   const actualPage = table.getState().pagination.pageIndex + 1;
+  const columnCount = table.getAllColumns().length;
   return (
     <div>
       <div className="rounded-md border bg-zinc-50">
@@ -32,7 +35,10 @@ export function DataTable<TData>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      style={{ width: header.getSize() }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -46,14 +52,35 @@ export function DataTable<TData>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading &&
+              Array.from({ length: 10 }).map((_, rowIdx) => (
+                <TableRow key={`skeleton-row-${rowIdx}`}>
+                  {Array.from({ length: columnCount }).map((_, colIdx) => (
+                    <TableCell key={`skeleton-cell-${colIdx}`}>
+                      <Skeleton className="h-10 w-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            {!isLoading && table.getRowModel().rows?.length < 1 && (
+              <TableRow>
+                <div className="flex gap-2 px-2 py-3">
+                  <span>Sem resultados</span>
+                </div>
+              </TableRow>
+            )}
+            {!isLoading &&
+              table.getRowModel().rows.length > 0 &&
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -61,57 +88,49 @@ export function DataTable<TData>({
                     </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={table.getAllColumns.length}
-                  className="text-center"
-                >
-                  Sem resultados.
-                </TableCell>
-              </TableRow>
-            )}
+              ))}
           </TableBody>
         </Table>
       </div>
       {hasPagination && (
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div>
-            <span>
-              Página {actualPage} de {table.getPageCount()}
-            </span>
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => table.firstPage()}
-          >
-            <ChevronsLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => table.lastPage()}
-          >
-            <ChevronsRight />
-          </Button>
+          {!isLoading && (
+            <>
+              <span>
+                Página {actualPage} de {table.getPageCount()}
+              </span>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => table.firstPage()}
+              >
+                <ChevronsLeft />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <ChevronLeft />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                <ChevronRight />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => table.lastPage()}
+              >
+                <ChevronsRight />
+              </Button>
+            </>
+          )}
         </div>
       )}
     </div>

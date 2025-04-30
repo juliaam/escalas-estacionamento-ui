@@ -10,10 +10,6 @@ export type Cooperator = {
 
 export const cooperatorsColumns: ColumnDef<Cooperator>[] = [
   {
-    accessorKey: "id",
-    header: "id",
-  },
-  {
     accessorKey: "name",
     header: "Nome",
   },

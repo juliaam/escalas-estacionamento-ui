@@ -31,8 +31,6 @@ export const CooperatorsTable = ({
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  if (isLoading) return <p>Carregando...</p>;
-
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex items-end justify-between">
@@ -47,7 +45,7 @@ export const CooperatorsTable = ({
           Adicionar cooperador <Plus />
         </Button>
       </div>
-      <DataTable table={table} />
+      <DataTable isLoading={isLoading} table={table} />
     </div>
   );
 };

@@ -86,8 +86,6 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
     onClose();
   };
 
-  console.log(errors, "errors");
-
   useEffect(() => {
     if (selectedCooperatorId) {
       setValue("cooperator_id", selectedCooperatorId);

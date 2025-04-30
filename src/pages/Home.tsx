@@ -15,6 +15,7 @@ import { formatScale } from "@/shared/utils/formatScale";
 import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
 import { Cooperator } from "@/shared/types/Cooperator";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Spinner } from "@/components/ui/spinner";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const Home = () => {
     useState("");
   const [selectedCooperatorForAssignment, setSelectedCooperatorForAssignment] =
     useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const cooperatorsIds: string[] = watch("cooperatorsIds");
   const exceptions: Exception[] = watch("exceptions");
   const assignments: AssignmentFormValues[] = watch("assignments");
@@ -96,12 +98,15 @@ const Home = () => {
 
   const onSubmit = async (data: ScaleFormValues) => {
     try {
+      setIsLoading(true);
       const scale = await ScaleService.generate(formatScale(data) as never);
       setScaleData(scale);
       toast("Escala gerada com sucesso!");
       navigate("/resultado");
     } catch {
       toast("Houve um erro ao gerar escala!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -121,21 +126,28 @@ const Home = () => {
   return (
     <>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ScaleLayout
-            cooperators={cooperators}
-            scaleName="name"
-            exceptions={exceptions}
-            assignments={assignments}
-            cooperatorsWithFlags={cooperatorsWithFlags}
-            onAddExceptionForCooperator={handleAddExceptionForCooperator}
-            onAddAssignmentForCooperator={handleAddAssignmentForCooperator}
-            onAddException={() => setIsExceptionModalOpen(true)}
-            onAddAssignment={() => setIsAssignmentModalOpen(true)}
-            onRemoveException={onRemoveException}
-            onRemoveAssignment={onRemoveAssignment}
-          />
-        </form>
+        {isLoading && (
+          <div className="flex h-full w-full items-center justify-center">
+            <Spinner />
+          </div>
+        )}
+        {!isLoading && (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ScaleLayout
+              cooperators={cooperators}
+              scaleName="name"
+              exceptions={exceptions}
+              assignments={assignments}
+              cooperatorsWithFlags={cooperatorsWithFlags}
+              onAddExceptionForCooperator={handleAddExceptionForCooperator}
+              onAddAssignmentForCooperator={handleAddAssignmentForCooperator}
+              onAddException={() => setIsExceptionModalOpen(true)}
+              onAddAssignment={() => setIsAssignmentModalOpen(true)}
+              onRemoveException={onRemoveException}
+              onRemoveAssignment={onRemoveAssignment}
+            />
+          </form>
+        )}
 
         <ExceptionModal
           isOpen={isExceptionModalOpen}

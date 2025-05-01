@@ -2,6 +2,7 @@ import { CooperatorsTable } from "@/components/tables/cooperators/page";
 import { ModalAddCooperators } from "@/components/ModalAddCooperators/ModalAddCooperators";
 import { useCallback, useEffect, useState } from "react";
 import { useCooperators } from "@/shared/hooks/useCooperators";
+import { CooperatorTable } from "@/components/tables/cooperators/helper";
 
 export const ManageCooperators = () => {
   const { data, isLoading, fetchCooperators } = useCooperators();
@@ -19,7 +20,7 @@ export const ManageCooperators = () => {
     <div className="container mx-auto flex flex-col gap-y-4 p-4">
       <span className="text-4xl">Gerenciar Cooperadores</span>
       <CooperatorsTable
-        data={data}
+        data={CooperatorTable.getTableData(data)}
         isLoading={isLoading}
         onClickAddCooperator={onClickAddCooperator}
       />

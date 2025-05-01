@@ -13,6 +13,7 @@ export const cooperatorsColumns: ColumnDef<Cooperator>[] = [
     accessorKey: "name",
     header: "Nome",
   },
+  { accessorKey: "type", header: "Tipo" },
   {
     accessorKey: "telephone",
     header: "Telefone",

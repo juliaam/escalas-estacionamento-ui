@@ -111,17 +111,17 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchCooperators();
+    const populateCooperators = async () => {
+      const coops = await fetchCooperators();
+      if (coops) {
+        setValue(
+          "cooperatorsIds",
+          coops.map((coop) => coop.id)
+        );
+      }
+    };
+    populateCooperators();
   }, []);
-
-  useEffect(() => {
-    if (cooperators.length > 0 && !cooperatorsIds.length) {
-      setValue(
-        "cooperatorsIds",
-        cooperators.map((coop) => coop.id)
-      );
-    }
-  }, [cooperators, cooperatorsIds.length, setValue]); // gambiarra, fazer algo melhor
 
   return (
     <>

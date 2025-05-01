@@ -13,7 +13,7 @@ class ExceptionForm {
       .nonempty("É necessário que tenha um cooperador escolhido"),
     date: z.date(),
     period: z.enum(Period.values as ["morning", "night"]),
-    reason: z.string(),
+    reason: z.string().optional(),
   });
   public initialValues(selectedDate: Date) {
     return {

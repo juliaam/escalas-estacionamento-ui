@@ -40,6 +40,7 @@ export function FormDatePicker<
     <FormField
       control={control}
       name={name}
+      disabled={disabled}
       render={({ field }) => (
         <FormItem>
           {label && (

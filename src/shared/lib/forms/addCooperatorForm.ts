@@ -9,12 +9,12 @@ class AddCooperatorForm {
   public initialValues: AddCooperatorFormValues = {
     name: "",
     telephone: undefined,
-    type: Cooperator.enum.cooperator,
+    type: Cooperator.enum.COOPERATOR,
   };
   public validationSchema = z.object({
     name: z.string().nonempty("O campo nome é obrigatório"),
     telephone: z.string().optional(),
-    type: z.enum(Cooperator.values as ["cooperator", "deacun"]),
+    type: z.enum(Cooperator.values as ["COOPERATOR", "DEACUN"]),
   });
 }
 

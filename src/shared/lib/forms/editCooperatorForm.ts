@@ -7,13 +7,13 @@ export type EditCooperatorFormValues = z.infer<
 
 class EditCooperatorForm {
   public validationSchema = z.object({
-    type: z.enum(Cooperator.values as ["deacun", "cooperator"]),
+    type: z.enum(Cooperator.values as ["DEACUN", "COOPERATOR"]),
     hasPinnedException: z.boolean(),
   });
 
   public initialValues: EditCooperatorFormValues = {
     hasPinnedException: false,
-    type: Cooperator.enum.cooperator,
+    type: Cooperator.enum.COOPERATOR,
   };
 }
 

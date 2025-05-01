@@ -47,13 +47,7 @@ const ScheduleAssignmentModal: React.FC<ScheduleAssignmentModalProps> = ({
     resolver: zodResolver(assignmentForm.validationSchema),
   });
 
-  const {
-    reset,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = methods;
+  const { reset, handleSubmit, watch, setValue } = methods;
   const selectedDateForScale = watch("date");
   const currentDate = watch("date");
 

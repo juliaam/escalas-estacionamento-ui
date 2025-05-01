@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Save } from "lucide-react";
 import MonthPicker from "@/components/MonthPicker/MonthPicker";
 import { Label } from "@/components/ui/label";
@@ -13,8 +12,7 @@ interface ScaleHeaderProps {
 }
 
 const ScaleHeader: React.FC<ScaleHeaderProps> = ({ className }) => {
-  const { register, control, setValue, reset } =
-    useFormContext<ScaleFormValues>();
+  const { control, setValue, reset } = useFormContext<ScaleFormValues>();
   const {
     field: { value },
   } = useController({ name: "date", control });
@@ -38,17 +36,6 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({ className }) => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="space-y-2">
-          <label htmlFor="name" className="text-sm font-medium">
-            Nome da Escala
-          </label>
-          <Input
-            {...register("name")}
-            placeholder="Ex: Escala de Julho/2023"
-            className="max-w-md"
-          />
-        </div>
-
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="flex-1 space-y-2">
             <Label htmlFor="month">Escolha o mês da escala</Label>

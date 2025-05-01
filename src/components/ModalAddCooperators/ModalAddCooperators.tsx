@@ -59,7 +59,12 @@ export const ModalAddCooperators = ({
         </DialogHeader>
         <FormProvider {...methods}>
           <form className="grid gap-4" onSubmit={handleSubmit(handleSave)}>
-            <FormInput label="Nome" name="name" />
+            <FormInput
+              label="Nome"
+              name="name"
+              required
+              placeholder="Digite aqui o nome do cooperator"
+            />
             <FormSelect
               label="Tipo"
               name="type"
@@ -70,7 +75,11 @@ export const ModalAddCooperators = ({
                 value: value,
               }))}
             />
-            <FormInput label="Telefone" name="telephone" />
+            <FormInput
+              label="Telefone"
+              name="telephone"
+              placeholder="Insira aqui o telefone do cooperador"
+            />
             <DialogFooter>
               <Button variant="outline" onClick={handleClose}>
                 Cancelar

@@ -7,12 +7,15 @@ import { cn } from "@/shared/utils/twMerge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFormContext } from "react-hook-form";
 import { Cooperator } from "@/shared/types/Cooperator";
+import { Spinner } from "../ui/spinner";
+import { Skeleton } from "../ui/skeleton";
 
 interface CooperatorListProps {
   allCooperators: Cooperator[];
   onAddException: (id: string) => void;
   onAddAssignment: (id: string) => void;
   className?: string;
+  isLoadingCooperators: boolean;
 }
 
 const CooperatorList: React.FC<CooperatorListProps> = ({
@@ -20,6 +23,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
   onAddException,
   onAddAssignment,
   className,
+  isLoadingCooperators,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"all" | "selected">("selected");
@@ -100,37 +104,50 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
           ? `${filteredCooperators.length} cooperadores encontrados`
           : `${selectedCooperatorsId.length} cooperadores selecionados`}
       </div>
-
-      <ScrollArea className="-mx-1 flex-1 px-1 pr-4">
-        <div className="space-y-2 pb-2">
-          {displayCooperators.length > 0 ? (
-            displayCooperators.map((cooperator) => (
-              <CooperatorCard
-                key={cooperator.id}
-                cooperator={cooperator}
-                isSelected={selectedCooperatorsId.includes(cooperator.id)}
-                onToggle={onToggle}
-                onAddException={onAddException}
-                onAddAssignment={onAddAssignment}
-              />
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                <Users className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <h3 className="mb-1 text-sm font-medium">
-                Nenhum cooperador encontrado
-              </h3>
-              <p className="max-w-xs text-xs text-muted-foreground">
-                {activeTab === "all"
-                  ? "Tente ajustar sua busca ou adicione novos cooperadores."
-                  : "Selecione cooperadores para incluir na escala."}
-              </p>
+      {isLoadingCooperators && (
+        <div className="space-y-2 px-1">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="rounded-md border px-4 py-3 shadow-sm">
+              <Skeleton className="mb-2 h-4 w-1/3" />
+              <Skeleton className="mb-1 h-4 w-1/2" />
+              <Skeleton className="h-3 w-1/4" />
             </div>
-          )}
+          ))}
         </div>
-      </ScrollArea>
+      )}
+
+      {!isLoadingCooperators && filteredCooperators.length > 0 && (
+        <ScrollArea className="flex-1 pr-6">
+          <div className="space-y-2 pb-2">
+            {displayCooperators.length > 0 ? (
+              displayCooperators.map((cooperator) => (
+                <CooperatorCard
+                  key={cooperator.id}
+                  cooperator={cooperator}
+                  isSelected={selectedCooperatorsId.includes(cooperator.id)}
+                  onToggle={onToggle}
+                  onAddException={onAddException}
+                  onAddAssignment={onAddAssignment}
+                />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                  <Users className="h-6 w-6 text-muted-foreground" />
+                </div>
+                <h3 className="mb-1 text-sm font-medium">
+                  Nenhum cooperador encontrado
+                </h3>
+                <p className="max-w-xs text-xs text-muted-foreground">
+                  {activeTab === "all"
+                    ? "Tente ajustar sua busca ou adicione novos cooperadores."
+                    : "Selecione cooperadores para incluir na escala."}
+                </p>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+      )}
     </div>
   );
 };

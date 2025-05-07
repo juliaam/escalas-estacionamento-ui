@@ -21,6 +21,7 @@ interface ScaleLayoutProps {
   onRemoveException: (id: string) => void;
   onAddAssignment: () => void;
   onRemoveAssignment: (id: string) => void;
+  isLoadingCooperators: boolean;
 }
 
 const ScaleLayout: React.FC<ScaleLayoutProps> = ({
@@ -35,6 +36,7 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
   onAddAssignment,
   onRemoveAssignment,
   cooperators,
+  isLoadingCooperators,
 }) => {
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-background to-muted/30">
@@ -51,6 +53,7 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
                 </Button>
               </div>
               <CooperatorList
+                isLoadingCooperators={isLoadingCooperators}
                 allCooperators={cooperatorsWithFlags}
                 onAddException={onAddExceptionForCooperator}
                 onAddAssignment={onAddAssignmentForCooperator}

@@ -20,7 +20,11 @@ import { Spinner } from "@/components/ui/spinner";
 const Home = () => {
   const navigate = useNavigate();
   const { setScaleData } = useScale();
-  const { data: cooperators, fetchCooperators } = useCooperators();
+  const {
+    data: cooperators,
+    fetchCooperators,
+    isLoading: isLoadingCooperators,
+  } = useCooperators();
   const methods = useForm<ScaleFormValues>({
     defaultValues: scaleForm.initialValues,
     resolver: zodResolver(scaleForm.validationSchema),
@@ -145,6 +149,7 @@ const Home = () => {
               onAddAssignment={() => setIsAssignmentModalOpen(true)}
               onRemoveException={onRemoveException}
               onRemoveAssignment={onRemoveAssignment}
+              isLoadingCooperators={isLoadingCooperators}
             />
           </form>
         )}

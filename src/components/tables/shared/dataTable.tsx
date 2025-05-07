@@ -28,8 +28,8 @@ export function DataTable<TData>({
   const columnCount = table.getAllColumns().length;
   return (
     <div>
-      <div className="rounded-md border bg-zinc-50">
-        <Table>
+      <div className="h-full rounded-md border bg-zinc-50">
+        <Table className="h-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -51,7 +51,7 @@ export function DataTable<TData>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="h-full">
             {isLoading &&
               Array.from({ length: 10 }).map((_, rowIdx) => (
                 <TableRow key={`skeleton-row-${rowIdx}`}>

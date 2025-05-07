@@ -15,20 +15,22 @@ const getDayAbbreviated = (
   }
 };
 
+const formatMonth = (month: string) => month.slice(0, 5).toUpperCase();
+
 export const Result = () => {
   const { scaleData } = useScale();
 
   return (
     <>
       {scaleData?.length > 0 && (
-        <div className="m-10 flex h-full flex-col gap-x-10 gap-y-10">
-          <span className="text-3xl font-semibold">
+        <div className="flex h-full flex-col gap-x-10 gap-y-4 p-4">
+          <span className="text-4xl font-semibold">
             Escala de serviço - {""}
             {format(scaleData[0].date, "MMMM yyyy", {
               locale: ptBR,
             })}
           </span>
-          <div className="flex h-full flex-wrap justify-evenly gap-10 rounded-md">
+          <div className="flex h-full flex-wrap justify-between gap-y-4 rounded-md">
             {scaleData.map((scale) => {
               return (
                 <div key={scale.id} className="flex">
@@ -37,9 +39,9 @@ export const Result = () => {
                       <div className="flex h-10 items-center px-2">Data</div>
                     </div>
 
-                    <div className="flex flex-grow items-center justify-center">
+                    <div className="flex min-w-[5.5rem] flex-grow items-center justify-center">
                       <span className="-rotate-45">
-                        {`${format(scale.date, "d MMMM", { locale: ptBR })} ${getDayAbbreviated(getDay(scale.date), scale.period)}`}
+                        {`${formatMonth(format(scale.date, "d MMMM", { locale: ptBR }))} ${getDayAbbreviated(getDay(scale.date), scale.period)}`}
                       </span>
                     </div>
                   </div>

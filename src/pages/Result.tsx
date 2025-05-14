@@ -62,15 +62,18 @@ export const Result = () => {
           <div className="flex h-full flex-wrap justify-between gap-y-4 rounded-md">
             {scaleData.map((scale) => {
               return (
-                <div key={scale.id} className="flex">
-                  <div className="flex h-full flex-col rounded-md border border-black bg-white">
-                    <div className="flex items-center border-b border-black text-muted-foreground">
-                      <div className="flex h-10 items-center px-2 font-medium text-black">
+                <div
+                  key={scale.id}
+                  className="flex overflow-hidden rounded-md border border-gray-800"
+                >
+                  <div className="flex h-full flex-col bg-white">
+                    <div className="flex items-center border-b border-r border-gray-800 text-muted-foreground">
+                      <div className="flex items-center px-2 py-2 font-medium text-black">
                         Data
                       </div>
                     </div>
 
-                    <div className="flex min-w-[6rem] flex-grow items-center justify-center">
+                    <div className="flex min-w-[6rem] flex-grow items-center justify-center border-r border-gray-800">
                       <span className="-rotate-45 font-medium text-gray-900">
                         {`${formatMonth(scale.date)} ${getDayAbbreviated(getDay(scale.date), scale.period)}`}
                       </span>

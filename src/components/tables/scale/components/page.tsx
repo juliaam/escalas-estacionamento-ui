@@ -1,5 +1,5 @@
 import { cooperatorsColumns } from "./columns";
-import { DataTable } from "@/components/tables/shared/dataTable";
+import { DataTable } from "./dataTable";
 import {
   getCoreRowModel,
   getFilteredRowModel,

@@ -5,7 +5,7 @@ export async function html2PDF(exportRef: RefObject<HTMLDivElement>) {
   if (!exportRef.current) return;
 
   const options = {
-    scale: 5,
+    scale: 2,
     useCORS: true,
     logging: false,
     scrollX: 0,

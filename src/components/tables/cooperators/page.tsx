@@ -37,7 +37,7 @@ export const CooperatorsTable = ({
         <div className="w-1/4">
           <AppInputSearch
             placeholder="Pesquise cooperadores..."
-            className="w-full bg-zinc-50"
+            className="w-full bg-white"
             onChangeValue={table.setGlobalFilter}
           />
         </div>

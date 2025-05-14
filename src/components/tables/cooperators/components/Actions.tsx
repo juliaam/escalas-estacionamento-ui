@@ -20,7 +20,7 @@ export const CooperatorsActions = () => {
     setOpenDelete(true);
   };
   return (
-    <div className="flex justify-center gap-x-2">
+    <div className="flex gap-x-2">
       <ModalEditCooperator isOpen={openEdit} setIsOpen={setOpenEdit} />
       <RemoveCooperatorModal isOpen={openDelete} setIsOpen={setOpenDelete} />
       <AppTooltipIconButton

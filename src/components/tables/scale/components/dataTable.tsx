@@ -27,17 +27,17 @@ export function DataTable<TData>({
   const actualPage = table.getState().pagination.pageIndex + 1;
   const columnCount = table.getAllColumns().length;
   return (
-    <div>
-      <div className="h-full rounded-md border bg-white">
+    <>
+      <div className="h-full bg-white">
         <Table className="h-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="border-gray-800">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      className="font-medium text-black"
+                      className="h-auto border-b-0 py-2 font-medium text-black"
                       style={{ width: header.getSize() }}
                     >
                       {header.isPlaceholder
@@ -74,6 +74,7 @@ export function DataTable<TData>({
               table.getRowModel().rows.length > 0 &&
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="border-gray-800"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
@@ -135,6 +136,6 @@ export function DataTable<TData>({
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }

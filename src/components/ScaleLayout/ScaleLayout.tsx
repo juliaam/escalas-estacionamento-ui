@@ -41,7 +41,11 @@ const ScaleLayout: React.FC<ScaleLayoutProps> = ({
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto flex h-full flex-col px-4 py-4">
-        <ScaleHeader scaleName={scaleName} className="mb-3" />
+        <ScaleHeader
+          isDisabledGenerateScale={!cooperators.length}
+          scaleName={scaleName}
+          className="mb-3"
+        />
 
         <div className="grid flex-1 grid-cols-1 gap-3 overflow-hidden lg:grid-cols-3">
           <div className="overflow-hidden lg:col-span-2">

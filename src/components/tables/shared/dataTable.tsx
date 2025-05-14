@@ -28,7 +28,7 @@ export function DataTable<TData>({
   const columnCount = table.getAllColumns().length;
   return (
     <div>
-      <div className="h-full rounded-md border bg-zinc-50">
+      <div className="h-full rounded-md border border-black bg-white">
         <Table className="h-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -37,6 +37,7 @@ export function DataTable<TData>({
                   return (
                     <TableHead
                       key={header.id}
+                      className="font-medium text-black"
                       style={{ width: header.getSize() }}
                     >
                       {header.isPlaceholder
@@ -79,6 +80,7 @@ export function DataTable<TData>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      className="font-medium text-zinc-800"
                       style={{ width: cell.column.getSize() }}
                     >
                       {flexRender(

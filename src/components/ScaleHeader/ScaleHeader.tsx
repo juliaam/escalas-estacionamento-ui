@@ -9,9 +9,13 @@ import { ScaleFormValues } from "@/shared/lib/forms/scaleForm";
 interface ScaleHeaderProps {
   scaleName: string;
   className?: string;
+  isDisabledGenerateScale?: boolean;
 }
 
-const ScaleHeader: React.FC<ScaleHeaderProps> = ({ className }) => {
+const ScaleHeader: React.FC<ScaleHeaderProps> = ({
+  className,
+  isDisabledGenerateScale,
+}) => {
   const { control, setValue, reset } = useFormContext<ScaleFormValues>();
   const {
     field: { value },
@@ -29,7 +33,11 @@ const ScaleHeader: React.FC<ScaleHeaderProps> = ({ className }) => {
   return (
     <div className={className}>
       <div className="flex items-center justify-end">
-        <Button type="submit" className="gap-1.5">
+        <Button
+          disabled={isDisabledGenerateScale}
+          type="submit"
+          className="gap-1.5"
+        >
           <Save className="h-4 w-4" />
           <span>Gerar Escala</span>
         </Button>

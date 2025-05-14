@@ -7,7 +7,6 @@ import { cn } from "@/shared/utils/twMerge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFormContext } from "react-hook-form";
 import { Cooperator } from "@/shared/types/Cooperator";
-import { Spinner } from "../ui/spinner";
 import { Skeleton } from "../ui/skeleton";
 
 interface CooperatorListProps {

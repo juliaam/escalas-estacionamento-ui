@@ -17,18 +17,26 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSelect } from "../forms";
 import { Cooperator } from "@/shared/enums/cooperatorType";
-import { FormInput } from "../forms/FormInput/FormInput";
+import { FormInput } from "../forms/FormInput";
+import { SectorSelector } from "../ModalEditCooperator/SectorSelector/SectorSelector";
+import { useState } from "react";
+import { getStandingOrSeatedSectors } from "@/shared/utils/getSeatedOrStandingSector";
+import { sectors } from "@/shared/mocks/sectors";
 
 type ModalAddCooperatorsProps = DialogProps & {
   onClose: () => void;
   onSaveEmit: () => void;
 };
 
+const { standing, seated } = getStandingOrSeatedSectors(sectors);
+
 export const ModalAddCooperators = ({
   onClose,
   onSaveEmit,
   ...props
 }: ModalAddCooperatorsProps) => {
+  const [selectedStanding, setSelectedStanding] = useState<string[]>([]);
+  const [selectedSeated, setSelectedSeated] = useState<string[]>([]);
   const methods = useForm({
     defaultValues: addCooperatorForm.initialValues,
     resolver: zodResolver(addCooperatorForm.validationSchema),
@@ -79,6 +87,14 @@ export const ModalAddCooperators = ({
               label="Telefone"
               name="telephone"
               placeholder="Insira aqui o telefone do cooperador"
+            />
+            <SectorSelector
+              standing={standing}
+              seated={seated}
+              selectedStanding={selectedStanding}
+              setSelectedStanding={setSelectedStanding}
+              selectedSeated={selectedSeated}
+              setSelectedSeated={setSelectedSeated}
             />
             <DialogFooter>
               <Button variant="outline" onClick={handleClose}>

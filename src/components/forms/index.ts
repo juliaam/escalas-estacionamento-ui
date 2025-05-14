@@ -1,3 +1,4 @@
-export * from "./DatePicker/DatePicker";
-export * from "./FormSelect/FormSelect";
-export * from "./FormTextarea/FormTextarea";
+export * from "./DatePicker";
+export * from "./FormSelect";
+export * from "./FormTextarea";
+export * from "./FormInput";

@@ -32,9 +32,7 @@ const ExceptionList: React.FC<ExceptionListProps> = ({
     <Card className={cn("flex h-full flex-col", className)}>
       <CardHeader className="flex-shrink-0 pb-2">
         <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-lg">Exceções</CardTitle>
-          </div>
+          <CardTitle className="text-lg">Exceções</CardTitle>
           <Button
             onClick={onAddException}
             disabled={!selectedCooperators.length}

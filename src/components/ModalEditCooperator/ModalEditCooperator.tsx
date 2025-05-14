@@ -5,43 +5,36 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Label,
-  Textarea,
 } from "@/components/ui";
-import { Switch } from "../ui/switch";
-import { useController, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   editCooperatorForm,
   EditCooperatorFormValues,
 } from "@/shared/lib/forms/editCooperatorForm";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+
+import { FormSelect } from "../forms";
+import { sectors } from "@/shared/mocks/sectors";
+import { useState } from "react";
+import { getStandingOrSeatedSectors } from "@/shared/utils/getSeatedOrStandingSector";
+import { SectorSelector } from "./SectorSelector/SectorSelector";
 
 type EditCooperatorModalProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 };
 
+const { standing, seated } = getStandingOrSeatedSectors(sectors);
+
 export const ModalEditCooperator = ({
   isOpen,
   setIsOpen,
 }: EditCooperatorModalProps) => {
-  const { watch, control, handleSubmit } = useForm<EditCooperatorFormValues>({
+  const methods = useForm<EditCooperatorFormValues>({
     defaultValues: editCooperatorForm.initialValues,
   });
-  const {
-    field: { onChange: onChangeException, value: hasException },
-  } = useController({ name: "hasPinnedException", control });
-  const {
-    field: { onChange: onChangeType, value: type },
-  } = useController({ name: "type", control });
-
-  const hasPinnedException = watch("hasPinnedException");
+  const [selectedStanding, setSelectedStanding] = useState<string[]>([]);
+  const [selectedSeated, setSelectedSeated] = useState<string[]>([]);
+  const { handleSubmit } = methods;
 
   const onCloseModal = () => {
     setIsOpen(false);
@@ -52,47 +45,35 @@ export const ModalEditCooperator = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
-        <form className="grid gap-4" onSubmit={handleSubmit(onSave)}>
-          <DialogHeader>
-            <DialogTitle>Configurar cooperador</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-2">
-            <Label>Tipo</Label>
-            <Select value={type} onValueChange={onChangeType}>
-              <SelectTrigger id="cooperator">
-                <SelectValue placeholder="Selecione um cooperador" />
-              </SelectTrigger>
-              <SelectContent>
-                {[
-                  { label: "Cooperador", value: "COOPERATOR" },
-                  { label: "Diácuno", value: "DEACUN" },
-                ].map((type) => (
-                  <SelectItem key={type.value} value={type.value}>
-                    {type.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2">
-            <Label>Tipo</Label>
-            <Switch
-              disabled
-              onCheckedChange={onChangeException}
-              checked={hasException}
+        <FormProvider {...methods}>
+          <form className="grid gap-4" onSubmit={handleSubmit(onSave)}>
+            <DialogHeader>
+              <DialogTitle>Configurar cooperador</DialogTitle>
+            </DialogHeader>
+            <FormSelect
+              name="type"
+              options={[
+                { label: "Cooperador", value: "COOPERATOR" },
+                { label: "Diácuno", value: "DEACUN" },
+              ]}
+              label="Tipo"
             />
-          </div>
-          <div className="grid gap-2">
-            <Label>Motivo (opcional)</Label>
-            <Textarea disabled={!hasPinnedException} />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={onCloseModal}>
-              Cancelar
-            </Button>
-            <Button type="submit">Alterar</Button>
-          </DialogFooter>
-        </form>
+            <SectorSelector
+              standing={standing}
+              seated={seated}
+              selectedStanding={selectedStanding}
+              setSelectedStanding={setSelectedStanding}
+              selectedSeated={selectedSeated}
+              setSelectedSeated={setSelectedSeated}
+            />
+            <DialogFooter>
+              <Button variant="outline" onClick={onCloseModal}>
+                Cancelar
+              </Button>
+              <Button type="submit">Alterar</Button>
+            </DialogFooter>
+          </form>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

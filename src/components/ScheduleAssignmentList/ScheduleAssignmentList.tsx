@@ -32,9 +32,7 @@ const ScheduleAssignmentList: React.FC<ScheduleAssignmentListProps> = ({
     <Card className={cn("flex h-full flex-col", className)}>
       <CardHeader className="flex-shrink-0 pb-2">
         <div className="flex items-center justify-between gap-x-2">
-          <div>
-            <CardTitle className="text-lg">Agendamentos</CardTitle>
-          </div>
+          <CardTitle className="text-lg">Agendamentos</CardTitle>
           <Button
             disabled={!selectedCooperators.length}
             onClick={onAddAssignment}

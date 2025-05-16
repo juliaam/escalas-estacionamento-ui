@@ -145,7 +145,10 @@ const Home = () => {
               cooperatorsWithFlags={cooperatorsWithFlags}
               onAddExceptionForCooperator={handleAddExceptionForCooperator}
               onAddAssignmentForCooperator={handleAddAssignmentForCooperator}
-              onAddException={() => setIsExceptionModalOpen(true)}
+              onAddException={() => {
+                setIsExceptionModalOpen(true);
+                setSelectedCooperatorForException("");
+              }}
               onAddAssignment={() => setIsAssignmentModalOpen(true)}
               onRemoveException={onRemoveException}
               onRemoveAssignment={onRemoveAssignment}
@@ -159,7 +162,10 @@ const Home = () => {
           cooperators={cooperatorsSelected}
           selectedCooperatorId={selectedCooperatorForException}
           setCooperatorId={setSelectedCooperatorForException}
-          onClose={() => setIsExceptionModalOpen(false)}
+          onClose={() => {
+            setIsExceptionModalOpen(false);
+            setSelectedCooperatorForException("");
+          }}
           onSave={onSaveException}
         />
 
@@ -168,7 +174,10 @@ const Home = () => {
           cooperators={cooperatorsSelected}
           selectedCooperatorId={selectedCooperatorForAssignment}
           onSave={onSaveAssignment}
-          onClose={() => setIsAssignmentModalOpen(false)}
+          onClose={() => {
+            setIsAssignmentModalOpen(false);
+            setSelectedCooperatorForAssignment("");
+          }}
         />
       </FormProvider>
     </>

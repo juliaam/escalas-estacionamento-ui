@@ -8,6 +8,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFormContext } from "react-hook-form";
 import { Cooperator } from "@/shared/types/Cooperator";
 import { Skeleton } from "../ui/skeleton";
+import {
+  AssignmentGenerateBody,
+  ExceptionGenerateBody,
+} from "@/shared/types/ScaleGenerateBody";
+import { ExceptionsFormValues } from "@/shared/lib/forms/exceptionForm";
+import { Exception } from "@/shared/types/Exception";
+import { Assignments } from "@/shared/types/Assignaments";
+import { AssignmentFormValues } from "@/shared/lib/forms/assignmentForm";
 
 interface CooperatorListProps {
   allCooperators: Cooperator[];
@@ -27,7 +35,7 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"all" | "selected">("selected");
 
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
 
   const selectedCooperatorsId = watch("cooperatorsIds") || [];
 
@@ -51,9 +59,25 @@ const CooperatorList: React.FC<CooperatorListProps> = ({
       : selectedCooperators;
 
   const onToggle = (coopId: string) => {
-    const cooperatorsIds: string[] = selectedCooperatorsId.includes(coopId)
-      ? selectedCooperatorsId.filter((id: string) => id !== coopId)
-      : [...selectedCooperatorsId, coopId];
+    let cooperatorsIds: string[] = [];
+    if (selectedCooperatorsId.includes(coopId)) {
+      const exceptions: Exception[] = getValues("exceptions");
+      const assignments: AssignmentGenerateBody[] = getValues("assignments");
+
+      cooperatorsIds = selectedCooperatorsId.filter(
+        (id: string) => id !== coopId
+      );
+      setValue(
+        "exceptions",
+        exceptions.filter((except) => except.cooperator_id !== coopId)
+      );
+      setValue(
+        "assignments",
+        assignments.filter((assignment) => assignment.cooperator_id !== coopId)
+      );
+    } else {
+      cooperatorsIds = [...selectedCooperatorsId, coopId];
+    }
 
     setValue("cooperatorsIds", cooperatorsIds, { shouldValidate: true });
   };

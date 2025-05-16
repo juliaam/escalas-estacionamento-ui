@@ -6,6 +6,7 @@ export type SectorGenerateBody = {
 };
 
 export type AssignmentGenerateBody = {
+  cooperator_id: string;
   date: string;
   period: string;
   sector: SectorGenerateBody[];
